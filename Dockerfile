@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     curl \
-    && docker-php-ext-install zip
+    && docker-php-ext-install zip pdo pdo_mysql
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
@@ -12,4 +12,3 @@ RUN pecl install xdebug \
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
