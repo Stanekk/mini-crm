@@ -38,6 +38,15 @@ class Company
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    public function __construct()
+    {
+        $now = new \DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
+        $this->isActive = true;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
