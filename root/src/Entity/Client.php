@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Dto\ClientDto;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -94,8 +93,4 @@ class Client
         return $this;
     }
 
-    public function toDto(): ClientDto
-    {
-        return new ClientDto($this->getId(), $this->getLastName(), $this->getLastName());
-    }
 }
