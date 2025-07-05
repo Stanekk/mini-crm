@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClientController extends AbstractController
 {
-    #[Route('/api/clients', name: 'app_clients')]
+    #[Route('/api/clients', name: 'app_clients', methods: ['GET'])]
     public function index(ClientRepository $clientRepository, ClientMapper $clientMapper): JSONResponse
     {
         $clients = $clientRepository->findAll();
