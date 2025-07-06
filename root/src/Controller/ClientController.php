@@ -42,7 +42,7 @@ class ClientController extends AbstractController
         $client = $this->clientService->create($dto);
         $clientDto = $this->clientMapper->toDto($client);
 
-        return new JsonResponse($clientDto, Response::HTTP_OK);
+        return new JsonResponse($clientDto, Response::HTTP_CREATED);
     }
     
 }
