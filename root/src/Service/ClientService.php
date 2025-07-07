@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Dto\CreateClientRequestDto;
-use App\Dto\UpdateClientRequestDto;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
