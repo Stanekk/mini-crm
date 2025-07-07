@@ -29,7 +29,7 @@ class CompanyController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/api/companies', name: 'app_companies', methods: ['GET'])]
+    #[Route('/api/companies', name: 'app_company_list', methods: ['GET'])]
     public function index(): JSONResponse
     {
         $companies = $this->companyRepository->findAll();
@@ -38,7 +38,7 @@ class CompanyController extends AbstractController
         return new JsonResponse($companiesDto, Response::HTTP_OK);
     }
 
-    #[Route('/api/companies', name: 'app_companies_create', methods: ['POST'])]
+    #[Route('/api/companies', name: 'app_company_create', methods: ['POST'])]
     public function create(#[MapRequestPayload(validationGroups: ['Default'])] CreateCompanyRequestDto $dto): JSONResponse
     {
         $company = $this->companyService->create($dto);
