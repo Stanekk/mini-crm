@@ -18,18 +18,21 @@ final readonly class CreateCompanyRequestDto
     public ?string $vatNumber;
     public ?string $nipNumber;
     public ?string $notes;
+    public ?bool $isActive;
 
     public function __construct(
         string $name = null,
         string $email = null,
         ?string $vatNumber = null,
         ?string $nipNumber = null,
-        ?string $notes = null
+        ?string $notes = null,
+        ?bool $isActive = true
     ) {
         $this->name = $name;
         $this->email = $email;
         $this->vatNumber = $vatNumber;
         $this->nipNumber = $nipNumber;
         $this->notes = $notes;
+        $this->isActive = $isActive;
     }
 }

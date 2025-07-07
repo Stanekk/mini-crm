@@ -24,6 +24,7 @@ class CompanyService
         $company->setVatNumber($dto->vatNumber);
         $company->setNipNumber($dto->nipNumber);
         $company->setNotes($dto->notes);
+        $company->setIsActive($dto->isActive);
 
         $this->em->persist($company);
         $this->em->flush();

@@ -83,7 +83,7 @@ class CompanyController extends AbstractController
         if (!$company) {
             throw new NotFoundHttpException('Company not found.');
         }
-        
+
         $company = $this->companyService->updateCompany($company, $data);
 
         $companyDto = $this->companyMapper->toDto($company);
