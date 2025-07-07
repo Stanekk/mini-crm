@@ -3,8 +3,10 @@
 namespace App\Service;
 
 use App\Dto\CreateClientRequestDto;
+use App\Dto\UpdateClientRequestDto;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ClientService
 {
@@ -26,6 +28,37 @@ class ClientService
 
         $this->em->persist($client);
 
+        $this->em->flush();
+
+        return $client;
+    }
+
+    public function getClientById(int $id): ?Client
+    {
+        $client = $this->em->getRepository(Client::class)->find($id);
+
+        if (!$client) {
+            return null;
+        }
+
+        return $client;
+    }
+
+    public function deleteClient(Client $client): void
+    {
+        $this->em->remove($client);
+        $this->em->flush();
+    }
+
+    public function updateClient(Client $client, array $data): Client
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        foreach ($data as $property => $value) {
+            if (property_exists($client, $property) || method_exists($client, 'set' . ucfirst($property))) {
+                $accessor->setValue($client, $property, $value);
+            }
+        }
         $this->em->flush();
 
         return $client;
