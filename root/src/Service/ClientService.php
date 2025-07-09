@@ -83,7 +83,7 @@ class ClientService
                 $client->setCompany($company);
             }
         }
-
+        
         $this->em->flush();
 
         return $client;

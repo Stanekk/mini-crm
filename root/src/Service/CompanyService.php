@@ -76,12 +76,15 @@ class CompanyService
     public function updateCompany(Company $company, array $data): Company
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-
+        if (isset($data['id'])) {
+            unset($data['id']);
+        }
         foreach ($data as $property => $value) {
             if (property_exists($company, $property) || method_exists($company, 'set' . ucfirst($property))) {
                 $accessor->setValue($company, $property, $value);
             }
         }
+        $company->setUpdatedAt(new \DateTimeImmutable());
         $this->em->flush();
 
         return $company;
