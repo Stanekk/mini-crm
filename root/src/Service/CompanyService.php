@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Dto\CreateCompanyRequestDto;
+use App\Entity\Client;
 use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -42,9 +43,35 @@ class CompanyService
 
     public function deleteCompany(Company $company): void
     {
+        $batchSize = 100;
+        $clientRepo = $this->em->getRepository(Client::class);
+        $offset = 0;
+
+        do {
+            $clients = $clientRepo->createQueryBuilder('c')
+                ->where('c.company = :company')
+                ->setParameter('company', $company)
+                ->setFirstResult($offset)
+                ->setMaxResults($batchSize)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($clients as $client) {
+                $client->setCompany(null);
+                $this->em->persist($client);
+            }
+
+            $this->em->flush();
+            $this->em->clear();
+
+            $offset += $batchSize;
+        } while (count($clients) > 0);
+
+        $company = $this->em->find(Company::class, $company->getId());
         $this->em->remove($company);
         $this->em->flush();
     }
+
 
     public function updateCompany(Company $company, array $data): Company
     {
