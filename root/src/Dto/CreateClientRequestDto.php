@@ -18,9 +18,9 @@ readonly final class CreateClientRequestDto
     #[CustomAssert\UniqueClientEmail]
     public ?string $email;
     public ?string $phone;
-    public ?string $company;
+    public ?int $company;
 
-    public function __construct(?string $firstName = null, ?string $lastName = null, ?string $email = null, ?string $phone = null, ?string $company = null)
+    public function __construct(?string $firstName = null, ?string $lastName = null, ?string $email = null, ?string $phone = null, ?int $company = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;

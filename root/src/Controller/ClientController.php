@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Mapper\ClientMapper;
 use App\Repository\ClientRepository;
 use App\Service\ClientService;
+use App\Validator\PatchClientValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +15,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ClientController extends AbstractController
 {
     private ClientRepository $clientRepository;
     private ClientMapper $clientMapper;
     private ClientService $clientService;
+    private ValidatorInterface $validator;
 
-    public function __construct(ClientRepository $clientRepository, ClientMapper $clientMapper, ClientService $clientService)
+    public function __construct(ClientRepository $clientRepository, ClientMapper $clientMapper, ClientService $clientService, ValidatorInterface $validator)
     {
         $this->clientRepository = $clientRepository;
         $this->clientMapper = $clientMapper;
         $this->clientService = $clientService;
+        $this->validator = $validator;
     }
 
     #[Route('/api/clients', name: 'app_client_list', methods: ['GET'])]
@@ -82,6 +87,11 @@ class ClientController extends AbstractController
 
         if (!$client) {
             throw new NotFoundHttpException('Client not found.');
+        }
+
+        $errors = $this->validator->validate(new PatchClientValidator($data));
+        if (count($errors) > 0) {
+            throw new ValidationFailedException(new \stdClass(), $errors);
         }
 
         $client = $this->clientService->updateClient($client, $data);

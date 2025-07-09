@@ -25,8 +25,8 @@ class Client
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $company = null;
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Company $company = null;
 
     public function getId(): ?int
     {
@@ -81,12 +81,12 @@ class Client
         return $this;
     }
 
-    public function getCompany(): ?string
+    public function getCompany(): ?Company
     {
         return $this->company;
     }
 
-    public function setCompany(?string $company): static
+    public function setCompany(?Company $company): static
     {
         $this->company = $company;
 
