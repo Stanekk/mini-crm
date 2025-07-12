@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Dto\CreateUserRequestDto;
+use App\Mapper\UserMapper;
 use App\Service\RegisterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,11 +14,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/api/register', name: 'app_register', methods: ['POST'])]
-    public function index(#[MapRequestPayload(validationGroups: ['Default'])] CreateUserRequestDto $dto, RegisterService $registerService): JsonResponse
+    private RegisterService $registerService;
+    private UserMapper $userMapper;
+    public function __construct(RegisterService $registerService, UserMapper $userMapper)
     {
-        $user = $registerService->registerUser($dto);
-        return new JsonResponse($user, Response::HTTP_OK);
+        $this->registerService = $registerService;
+        $this->userMapper = $userMapper;
+    }
+
+    #[Route('/api/register', name: 'app_register', methods: ['POST'])]
+    public function index(#[MapRequestPayload(validationGroups: ['Default'])] CreateUserRequestDto $dto): JsonResponse
+    {
+        $user = $this->registerService->registerUser($dto);
+        $userDto = $this->userMapper->toDto($user);
+        return new JsonResponse($userDto, Response::HTTP_CREATED);
     }
 
 }
