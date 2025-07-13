@@ -12,6 +12,7 @@ class LoginController extends AbstractController
     #[Route('/api/login', name: 'api_login')]
     public function index(): Response
     {
+        $user = $this->getUser();
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/ApiLoginController.php',
