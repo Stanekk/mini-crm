@@ -21,12 +21,12 @@ class ClientService
     public function create(CreateClientRequestDto $dto): Client
     {
         $company = null;
-        if ($dto->company) {
+        if ($dto->company !== null) {
             $company = $this->companyService->getCompanyById($dto->company);
-        }
 
-        if (!$company) {
-            throw new EntityNotFoundException("Company with id {$dto->company} not found");
+            if (!$company) {
+                throw new EntityNotFoundException("Company with id {$dto->company} not found");
+            }
         }
 
         $client = new Client();
