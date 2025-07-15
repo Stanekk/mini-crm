@@ -145,4 +145,29 @@ class ClientServiceTest extends TestCase
         $this->assertNull($client->getCompany());
     }
 
+    public function testUpdateClientWithEmptyData(): void
+    {
+        $existingCompany = new Company();
+        $existingCompany->setName('Old Company');
+
+        $client = new Client();
+        $client->setFirstName('Thomas');
+        $client->setLastName('Banderas');
+        $client->setEmail('thomas@example.com');
+        $client->setPhone('+4899112233');
+        $client->setCompany($existingCompany);
+
+        $this->assertInstanceOf(Company::class, $client->getCompany());
+
+        $data = [];
+
+        $client = $this->clientService->updateClient($client, $data);
+
+        $this->assertSame('Thomas', $client->getFirstName());
+        $this->assertSame('Banderas', $client->getLastName());
+        $this->assertSame('thomas@example.com', $client->getEmail());
+        $this->assertSame('+4899112233', $client->getPhone());
+        $this->assertSame($existingCompany, $client->getCompany());
+    }
+
 }
