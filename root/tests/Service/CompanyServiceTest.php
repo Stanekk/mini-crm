@@ -56,4 +56,31 @@ class CompanyServiceTest extends TestCase
         $this->assertTrue($company->isActive());
 
     }
+
+    public function testUpdateCompany(): void
+    {
+        $company = new Company();
+        $company->setEmail('company@email.com');
+        $company->setIsActive(true);
+        $company->setNipNumber('123456789');
+        $company->setNotes('Notes');
+
+        $updateCompanyData = [
+            'name' => 'New Company Name',
+            'isActive' => false,
+            'email' => 'new@company.com',
+            'notes' => null,
+            'nipNumber' => '99888666',
+        ];
+
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $updatedCompany = $this->companyService->updateCompany($company, $updateCompanyData);
+
+        $this->assertSame('New Company Name', $updatedCompany->getName());
+        $this->assertSame('new@company.com', $updatedCompany->getEmail());
+        $this->assertSame('99888666', $updatedCompany->getNipNumber());
+        $this->assertFalse($updatedCompany->isActive());
+        $this->assertNull($updatedCompany->getNotes());
+    }
 }
