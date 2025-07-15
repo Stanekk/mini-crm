@@ -32,7 +32,6 @@ class ClientServiceTest extends TestCase
 
         $client = $this->clientService->create($dto);
 
-        $this->assertInstanceOf(Client::class, $client);
         $this->assertSame('firstName', $client->getFirstName());
         $this->assertSame('lastName', $client->getLastName());
         $this->assertSame('email@email.com', $client->getEmail());
@@ -53,7 +52,6 @@ class ClientServiceTest extends TestCase
 
         $client = $this->clientService->create($dto);
 
-        $this->assertInstanceOf(Client::class, $client);
         $this->assertSame('firstName', $client->getFirstName());
         $this->assertSame('lastName', $client->getLastName());
         $this->assertSame('email@email.com', $client->getEmail());
@@ -84,7 +82,7 @@ class ClientServiceTest extends TestCase
         ];
 
         $client = $this->clientService->updateClient($client, $data);
-        $this->assertInstanceOf(Client::class, $client);
+
         $this->assertSame($data['firstName'], $client->getFirstName());
         $this->assertSame($data['lastName'], $client->getLastName());
         $this->assertSame($data['phone'], $client->getPhone());
@@ -115,11 +113,11 @@ class ClientServiceTest extends TestCase
         ];
 
         $company = new Company();
-        $company->setName('Extra company');
+        $company->setName('Update company');
         $this->companyService->method('getCompanyById')->with(123)->willReturn($company);
 
         $client = $this->clientService->updateClient($client, $data);
-        $this->assertInstanceOf(Client::class, $client);
+
         $this->assertSame($data['firstName'], $client->getFirstName());
         $this->assertSame($data['lastName'], $client->getLastName());
         $this->assertSame($data['phone'], $client->getPhone());
