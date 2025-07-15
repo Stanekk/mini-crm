@@ -127,5 +127,24 @@ class ClientServiceTest extends TestCase
 
     }
 
+    public function testUpdateClientWithNonExistingCompany(): void
+    {
+        $existingCompany = new Company();
+        $existingCompany->setName('Old Company');
+
+        $client = new Client();
+        $client->setCompany($existingCompany);
+
+        $this->assertInstanceOf(Company::class, $client->getCompany());
+
+        $data = [
+            'company' => 999,
+        ];
+
+        $this->companyService->method('getCompanyById')->with(999)->willReturn(null);
+
+        $client = $this->clientService->updateClient($client, $data);
+        $this->assertNull($client->getCompany());
+    }
 
 }
