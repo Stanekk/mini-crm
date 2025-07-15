@@ -61,5 +61,71 @@ class ClientServiceTest extends TestCase
         $this->assertSame($company, $client->getCompany());
     }
 
+    public function testUpdateClientWithCompanyNull(): void
+    {
+        $company = new Company();
+        $company->setName('Extra company');
+        $company->setVatNumber("23423432434");
+
+        $client = new Client();
+        $client->setFirstName('Thomas');
+        $client->setLastName('Muller');
+        $client->setEmail('thomas@example.com');
+        $client->setPhone('+4899112233');
+        $client->setCompany($company);
+
+        $this->assertInstanceOf(Company::class, $client->getCompany());
+
+        $data = [
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
+            'phone' => '+48555111222',
+            'company' => null,
+        ];
+
+        $client = $this->clientService->updateClient($client, $data);
+        $this->assertInstanceOf(Client::class, $client);
+        $this->assertSame($data['firstName'], $client->getFirstName());
+        $this->assertSame($data['lastName'], $client->getLastName());
+        $this->assertSame($data['phone'], $client->getPhone());
+        $this->assertNull($client->getCompany());
+
+    }
+
+    public function testUpdateClientWithCompany(): void
+    {
+        $company = new Company();
+        $company->setName('Extra company');
+        $company->setVatNumber("23423432434");
+
+        $client = new Client();
+        $client->setFirstName('Thomas');
+        $client->setLastName('Muller');
+        $client->setEmail('thomas@example.com');
+        $client->setPhone('+4899112233');
+        $client->setCompany($company);
+
+        $this->assertInstanceOf(Company::class, $client->getCompany());
+
+        $data = [
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
+            'phone' => '+48555111222',
+            'company' => 123,
+        ];
+
+        $company = new Company();
+        $company->setName('Extra company');
+        $this->companyService->method('getCompanyById')->with(123)->willReturn($company);
+
+        $client = $this->clientService->updateClient($client, $data);
+        $this->assertInstanceOf(Client::class, $client);
+        $this->assertSame($data['firstName'], $client->getFirstName());
+        $this->assertSame($data['lastName'], $client->getLastName());
+        $this->assertSame($data['phone'], $client->getPhone());
+        $this->assertSame($company, $client->getCompany());
+
+    }
+
 
 }
