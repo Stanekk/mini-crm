@@ -167,4 +167,17 @@ class ClientServiceTest extends TestCase
         $this->assertSame('+4899112233', $client->getPhone());
         $this->assertSame($existingCompany, $client->getCompany());
     }
+
+    public function testUpdateClientPhoneEmptyStringSetsNull(): void
+    {
+        $client = new Client();
+        $client->setPhone('+48123123');
+
+        $data = [
+            'phone' => '',
+        ];
+
+        $updatedClient = $this->clientService->updateClient($client, $data);
+        $this->assertNull($updatedClient->getPhone());
+    }
 }
