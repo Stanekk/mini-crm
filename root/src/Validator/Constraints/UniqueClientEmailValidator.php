@@ -8,7 +8,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class UniqueClientEmailValidator extends ConstraintValidator
 {
-    public function __construct(private readonly ClientRepository $clientRepository) {}
+    public function __construct(private readonly ClientRepository $clientRepository)
+    {
+    }
 
     public function validate($value, Constraint $constraint): void
     {

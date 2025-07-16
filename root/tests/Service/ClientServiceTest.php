@@ -63,7 +63,7 @@ class ClientServiceTest extends TestCase
     {
         $company = new Company();
         $company->setName('Extra company');
-        $company->setVatNumber("23423432434");
+        $company->setVatNumber('23423432434');
 
         $client = new Client();
         $client->setFirstName('Thomas');
@@ -87,14 +87,13 @@ class ClientServiceTest extends TestCase
         $this->assertSame($data['lastName'], $client->getLastName());
         $this->assertSame($data['phone'], $client->getPhone());
         $this->assertNull($client->getCompany());
-
     }
 
     public function testUpdateClientWithCompany(): void
     {
         $company = new Company();
         $company->setName('Extra company');
-        $company->setVatNumber("23423432434");
+        $company->setVatNumber('23423432434');
 
         $client = new Client();
         $client->setFirstName('Thomas');
@@ -122,7 +121,6 @@ class ClientServiceTest extends TestCase
         $this->assertSame($data['lastName'], $client->getLastName());
         $this->assertSame($data['phone'], $client->getPhone());
         $this->assertSame($company, $client->getCompany());
-
     }
 
     public function testUpdateClientWithNonExistingCompany(): void
@@ -169,5 +167,4 @@ class ClientServiceTest extends TestCase
         $this->assertSame('+4899112233', $client->getPhone());
         $this->assertSame($existingCompany, $client->getCompany());
     }
-
 }

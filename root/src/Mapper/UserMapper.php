@@ -7,7 +7,6 @@ use App\Entity\User;
 
 class UserMapper
 {
-
     public function toDto(User $user): UserDto
     {
         return new UserDto(

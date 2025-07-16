@@ -21,7 +21,7 @@ class ClientService
     public function create(CreateClientRequestDto $dto): Client
     {
         $company = null;
-        if ($dto->company !== null) {
+        if (null !== $dto->company) {
             $company = $this->companyService->getCompanyById($dto->company);
 
             if (!$company) {
@@ -62,31 +62,30 @@ class ClientService
 
     public function updateClient(Client $client, array $data): Client
     {
-        if (array_key_exists('firstName', $data) && $data['firstName'] !== null) {
+        if (array_key_exists('firstName', $data) && null !== $data['firstName']) {
             $client->setFirstName($data['firstName']);
         }
-        if (array_key_exists('lastName', $data) && $data['lastName'] !== null) {
+        if (array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $client->setLastName($data['lastName']);
         }
         if (array_key_exists('phone', $data) && $data['phone']) {
-            if (trim($data['phone']) === '') {
+            if ('' === trim($data['phone'])) {
                 $client->setPhone(null);
             } else {
                 $client->setPhone($data['phone']);
             }
         }
         if (array_key_exists('company', $data)) {
-            if ($data['company'] === null) {
+            if (null === $data['company']) {
                 $client->setCompany(null);
             } else {
                 $company = $this->companyService->getCompanyById($data['company']);
                 $client->setCompany($company);
             }
         }
-        
+
         $this->em->flush();
 
         return $client;
     }
-
 }

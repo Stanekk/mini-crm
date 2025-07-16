@@ -2,9 +2,7 @@
 
 namespace App\Dto;
 
-use App\Entity\Company;
-
-readonly final class ClientDto
+final readonly class ClientDto
 {
     public int $id;
     public string $firstName;

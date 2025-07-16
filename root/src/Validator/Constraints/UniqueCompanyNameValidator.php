@@ -8,7 +8,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class UniqueCompanyNameValidator extends ConstraintValidator
 {
-    public function __construct(private readonly CompanyRepository $companyRepository) {}
+    public function __construct(private readonly CompanyRepository $companyRepository)
+    {
+    }
 
     public function validate($value, Constraint $constraint): void
     {

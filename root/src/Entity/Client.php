@@ -92,5 +92,4 @@ class Client
 
         return $this;
     }
-
 }

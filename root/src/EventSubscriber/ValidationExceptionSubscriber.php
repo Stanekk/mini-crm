@@ -20,12 +20,13 @@ class ValidationExceptionSubscriber implements EventSubscriberInterface
         if ($validationException instanceof ValidationFailedException) {
             $errors = $this->formatViolations($validationException);
             $event->setResponse(new JsonResponse(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY));
+
             return;
         }
 
         if ($exception instanceof EntityNotFoundException) {
             $event->setResponse(new JsonResponse([
-                'error' => $exception->getMessage() ?: 'Resource not found'
+                'error' => $exception->getMessage() ?: 'Resource not found',
             ], Response::HTTP_NOT_FOUND));
         }
     }

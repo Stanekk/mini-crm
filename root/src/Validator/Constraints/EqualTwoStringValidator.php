@@ -33,4 +33,3 @@ class EqualTwoStringValidator extends ConstraintValidator
         }
     }
 }
-

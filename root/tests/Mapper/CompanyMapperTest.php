@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class CompanyMapperTest extends TestCase
 {
-
     public function testToDto()
     {
         $company = new Company();
@@ -17,15 +16,15 @@ class CompanyMapperTest extends TestCase
         $property = $reflection->getProperty('id');
         $property->setAccessible(true);
         $property->setValue($company, 123);
-        $company->setName("Name");
-        $company->setEmail("email@email.com");
-        $company->setVatNumber("123456789PL");
-        $created = new \DateTimeImmutable("now");
+        $company->setName('Name');
+        $company->setEmail('email@email.com');
+        $company->setVatNumber('123456789PL');
+        $created = new \DateTimeImmutable('now');
         $updated = $created->modify('+5 minutes');
         $company->setCreatedAt($created);
         $company->setUpdatedAt($updated);
-        $company->setNipNumber("001123456789");
-        $company->setNotes("Notes");
+        $company->setNipNumber('001123456789');
+        $company->setNotes('Notes');
         $company->setIsActive(false);
 
         $companyMapper = new CompanyMapper();
@@ -42,7 +41,5 @@ class CompanyMapperTest extends TestCase
         $this->assertEquals('001123456789', $dto->nipNumber);
         $this->assertEquals('Notes', $dto->notes);
         $this->assertFalse($dto->isActive);
-
     }
-
 }

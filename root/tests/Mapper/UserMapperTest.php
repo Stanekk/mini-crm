@@ -24,6 +24,5 @@ class UserMapperTest extends TestCase
         $this->assertInstanceOf(UserDto::class, $dto);
         $this->assertEquals(123, $dto->id);
         $this->assertEquals('email@example.com', $dto->email);
-
     }
 }

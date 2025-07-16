@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class CompanyServiceTest extends TestCase
 {
-
     private $entityManager;
     private CompanyService $companyService;
 
@@ -19,9 +18,10 @@ class CompanyServiceTest extends TestCase
         $this->entityManager = $this->createMock(EntityManager::class);
         $this->companyService = new CompanyService($this->entityManager);
     }
+
     public function testCreateCompany(): void
     {
-        $companyDto = new CreateCompanyRequestDto("Company", "email@example.com", "112334", "112345PL", "Notes", true);
+        $companyDto = new CreateCompanyRequestDto('Company', 'email@example.com', '112334', '112345PL', 'Notes', true);
 
         $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Company::class));
 
@@ -35,12 +35,11 @@ class CompanyServiceTest extends TestCase
         $this->assertEquals('112345PL', $company->getNipNumber());
         $this->assertEquals('Notes', $company->getNotes());
         $this->assertTrue($company->isActive());
-
     }
 
     public function testCreateCompanyWithNullableFields(): void
     {
-        $companyDto = new CreateCompanyRequestDto("Company", "email@example.com", null, null, null, true);
+        $companyDto = new CreateCompanyRequestDto('Company', 'email@example.com', null, null, null, true);
 
         $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Company::class));
 
@@ -54,7 +53,6 @@ class CompanyServiceTest extends TestCase
         $this->assertNull($company->getNipNumber());
         $this->assertNull($company->getNotes());
         $this->assertTrue($company->isActive());
-
     }
 
     public function testUpdateCompany(): void

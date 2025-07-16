@@ -34,16 +34,16 @@ class ClientController extends AbstractController
     }
 
     #[Route('/api/clients', name: 'app_client_list', methods: ['GET'])]
-    public function index(): JSONResponse
+    public function index(): JsonResponse
     {
         $clients = $this->clientRepository->findAll();
-        $clientsDto = array_map(fn(Client $client) => $this->clientMapper->toDto($client), $clients);
+        $clientsDto = array_map(fn (Client $client) => $this->clientMapper->toDto($client), $clients);
 
         return new JsonResponse($clientsDto, Response::HTTP_OK);
     }
 
     #[Route('/api/clients', name: 'app_client_create', methods: ['POST'])]
-    public function create(#[MapRequestPayload(validationGroups: ['Default'])] CreateClientRequestDto $dto): JSONResponse
+    public function create(#[MapRequestPayload(validationGroups: ['Default'])] CreateClientRequestDto $dto): JsonResponse
     {
         $client = $this->clientService->create($dto);
         $clientDto = $this->clientMapper->toDto($client);
@@ -52,7 +52,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/api/clients/{id}', name: 'app_client_details', methods: ['GET'])]
-    public function details(int $id): JSONResponse
+    public function details(int $id): JsonResponse
     {
         $client = $this->clientService->getClientById($id);
 
@@ -66,7 +66,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/api/clients/{id}', name: 'app_client_delete', methods: ['DELETE'])]
-    public function delete(int $id): JSONResponse
+    public function delete(int $id): JsonResponse
     {
         $client = $this->clientService->getClientById($id);
 
@@ -80,7 +80,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/api/clients/{id}', name: 'app_client_update', methods: ['PATCH'])]
-    public function update(int $id, Request $request): JSONResponse
+    public function update(int $id, Request $request): JsonResponse
     {
         $client = $this->clientService->getClientById($id);
         $data = $request->toArray();
@@ -99,5 +99,4 @@ class ClientController extends AbstractController
 
         return new JsonResponse($updatedClientDto, Response::HTTP_OK);
     }
-    
 }

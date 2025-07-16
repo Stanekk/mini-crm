@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Validator\Constraints;
 
-use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class EqualTwoStrings extends Constraint
 {
     public string $field;
@@ -15,15 +15,15 @@ class EqualTwoStrings extends Constraint
         string $field,
         string $fieldToCompare,
         ?string $message = null,
-        array $groups = null,
-        mixed $payload = null
+        ?array $groups = null,
+        mixed $payload = null,
     ) {
         parent::__construct([], $groups, $payload);
 
         $this->field = $field;
         $this->fieldToCompare = $fieldToCompare;
 
-        if ($message !== null) {
+        if (null !== $message) {
             $this->message = $message;
         }
     }

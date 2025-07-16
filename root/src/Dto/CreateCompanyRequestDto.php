@@ -2,8 +2,8 @@
 
 namespace App\Dto;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class CreateCompanyRequestDto
 {
@@ -21,12 +21,12 @@ final readonly class CreateCompanyRequestDto
     public ?bool $isActive;
 
     public function __construct(
-        string $name = null,
-        string $email = null,
+        ?string $name = null,
+        ?string $email = null,
         ?string $vatNumber = null,
         ?string $nipNumber = null,
         ?string $notes = null,
-        ?bool $isActive = true
+        ?bool $isActive = true,
     ) {
         $this->name = $name;
         $this->email = $email;

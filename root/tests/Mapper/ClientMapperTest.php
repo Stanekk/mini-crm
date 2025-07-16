@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ClientMapperTest extends TestCase
 {
-
     private $companyMapper;
 
     public function setUp(): void
@@ -41,7 +40,5 @@ class ClientMapperTest extends TestCase
         $this->assertEquals('email@example.com', $dto->email);
         $this->assertEquals('+48123456789', $dto->phone);
         $this->assertNull($dto->company);
-
-
     }
 }

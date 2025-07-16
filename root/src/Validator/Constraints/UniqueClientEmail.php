@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -8,4 +9,3 @@ class UniqueClientEmail extends Constraint
 {
     public string $message = 'Email {{ value }} is already taken.';
 }
-

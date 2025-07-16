@@ -18,8 +18,8 @@ class PatchClientValidator
     {
         $metadata->addPropertyConstraint('data', new Assert\Callback(function ($payload, $context) {
             if (array_key_exists('firstName', $payload)) {
-                $value = trim((string)$payload['firstName']);
-                if ($value === '') {
+                $value = trim((string) $payload['firstName']);
+                if ('' === $value) {
                     $context->buildViolation('First name cannot be blank.')
                         ->atPath('firstName')
                         ->addViolation();
@@ -29,8 +29,8 @@ class PatchClientValidator
 
         $metadata->addPropertyConstraint('data', new Assert\Callback(function ($payload, $context) {
             if (array_key_exists('lastName', $payload)) {
-                $value = trim((string)$payload['lastName']);
-                if ($value === '') {
+                $value = trim((string) $payload['lastName']);
+                if ('' === $value) {
                     $context->buildViolation('Last name cannot be blank.')
                         ->atPath('lastName')
                         ->addViolation();

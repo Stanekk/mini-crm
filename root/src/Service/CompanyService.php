@@ -29,14 +29,16 @@ class CompanyService
 
         $this->em->persist($company);
         $this->em->flush();
-        
+
         return $company;
     }
 
     public function getCompanyById(int $id): ?Company
     {
         $company = $this->em->getRepository(Company::class)->find($id);
-        if (!$company) return null;
+        if (!$company) {
+            return null;
+        }
 
         return $company;
     }
@@ -72,7 +74,6 @@ class CompanyService
         $this->em->flush();
     }
 
-
     public function updateCompany(Company $company, array $data): Company
     {
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -80,7 +81,7 @@ class CompanyService
             unset($data['id']);
         }
         foreach ($data as $property => $value) {
-            if (property_exists($company, $property) || method_exists($company, 'set' . ucfirst($property))) {
+            if (property_exists($company, $property) || method_exists($company, 'set'.ucfirst($property))) {
                 $accessor->setValue($company, $property, $value);
             }
         }

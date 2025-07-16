@@ -32,16 +32,16 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/api/companies', name: 'app_company_list', methods: ['GET'])]
-    public function index(): JSONResponse
+    public function index(): JsonResponse
     {
         $companies = $this->companyRepository->findAll();
-        $companiesDto = array_map(fn(Company $company) => $this->companyMapper->toDto($company), $companies);
-        
+        $companiesDto = array_map(fn (Company $company) => $this->companyMapper->toDto($company), $companies);
+
         return new JsonResponse($companiesDto, Response::HTTP_OK);
     }
 
     #[Route('/api/companies', name: 'app_company_create', methods: ['POST'])]
-    public function create(#[MapRequestPayload(validationGroups: ['Default'])] CreateCompanyRequestDto $dto): JSONResponse
+    public function create(#[MapRequestPayload(validationGroups: ['Default'])] CreateCompanyRequestDto $dto): JsonResponse
     {
         $company = $this->companyService->create($dto);
         $responseDto = $this->companyMapper->toDto($company);
@@ -50,7 +50,7 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/api/companies/{id}', name: 'app_company_details', methods: ['GET'])]
-    public function details(int $id): JSONResponse
+    public function details(int $id): JsonResponse
     {
         $company = $this->companyService->getCompanyById($id);
         if (!$company) {
@@ -63,7 +63,7 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/api/companies/{id}', name: 'app_company_delete', methods: ['DELETE'])]
-    public function delete(int $id): JSONResponse
+    public function delete(int $id): JsonResponse
     {
         $company = $this->companyService->getCompanyById($id);
         if (!$company) {
@@ -76,7 +76,7 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/api/companies/{id}', name: 'app_company_edit', methods: ['PATCH'])]
-    public function update(int $id, Request $request): JSONResponse
+    public function update(int $id, Request $request): JsonResponse
     {
         $company = $this->companyService->getCompanyById($id);
         $data = $request->toArray();

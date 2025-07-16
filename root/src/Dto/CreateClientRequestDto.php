@@ -3,10 +3,9 @@
 namespace App\Dto;
 
 use App\Validator\Constraints as CustomAssert;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class CreateClientRequestDto
+final readonly class CreateClientRequestDto
 {
     #[Assert\NotBlank(message: 'A client first name should not be blank')]
     public ?string $firstName;
@@ -28,5 +27,4 @@ readonly final class CreateClientRequestDto
         $this->phone = $phone;
         $this->company = $company;
     }
-
 }

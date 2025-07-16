@@ -55,7 +55,6 @@ class Company
         $this->clients = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;

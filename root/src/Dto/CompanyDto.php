@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-readonly final class CompanyDto
+final readonly class CompanyDto
 {
     public int $id;
     public string $name;
@@ -23,7 +23,7 @@ readonly final class CompanyDto
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $updatedAt,
         ?string $notes,
-        bool $isActive
+        bool $isActive,
     ) {
         $this->id = $id;
         $this->name = $name;

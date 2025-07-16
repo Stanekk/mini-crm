@@ -17,9 +17,10 @@ class ClientMapper
     public function toDto(Client $client): ClientDto
     {
         $companyDto = null;
-        if ($client->getCompany() != null) {
+        if (null != $client->getCompany()) {
             $companyDto = $this->companyMapper->toDto($client->getCompany());
         }
+
         return new ClientDto(
             $client->getId(),
             $client->getFirstName(),
