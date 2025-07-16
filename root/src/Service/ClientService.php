@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Dto\CreateClientRequestDto;
 use App\Entity\Client;
+use App\Helpers\StringSanitizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
@@ -68,11 +69,13 @@ class ClientService
         if (array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $client->setLastName($data['lastName']);
         }
-        if (array_key_exists('phone', $data) && $data['phone']) {
-            if ('' === trim($data['phone'])) {
+        if (array_key_exists('phone', $data)) {
+            $trimmedPhone = trim($data['phone']);
+            if ('' === $trimmedPhone) {
                 $client->setPhone(null);
             } else {
-                $client->setPhone($data['phone']);
+                $sanitizedPhone = StringSanitizer::sanitizeString($trimmedPhone);
+                $client->setPhone($sanitizedPhone);
             }
         }
         if (array_key_exists('company', $data)) {
