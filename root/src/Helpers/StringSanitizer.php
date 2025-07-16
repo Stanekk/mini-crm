@@ -4,8 +4,10 @@ namespace App\Helpers;
 
 class StringSanitizer
 {
-    public static function sanitizeString(string $stringToSanitize): string
+    public static function sanitizePhone(string $phone): string
     {
-        return preg_replace('/\s+/', '', $stringToSanitize);
+        $unescaped = stripcslashes($phone);
+
+        return preg_replace('/[^0-9+]/', '', $unescaped);
     }
 }

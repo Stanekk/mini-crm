@@ -74,7 +74,7 @@ class ClientService
             if ('' === $trimmedPhone) {
                 $client->setPhone(null);
             } else {
-                $sanitizedPhone = StringSanitizer::sanitizeString($trimmedPhone);
+                $sanitizedPhone = StringSanitizer::sanitizePhone($trimmedPhone);
                 $client->setPhone($sanitizedPhone);
             }
         }
