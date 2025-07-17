@@ -7,6 +7,7 @@ use App\Entity\Company;
 use App\Mapper\CompanyMapper;
 use App\Repository\CompanyRepository;
 use App\Service\CompanyService;
+use App\Validator\PatchCompanyValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CompanyController extends AbstractController
@@ -82,6 +84,11 @@ class CompanyController extends AbstractController
         $data = $request->toArray();
         if (!$company) {
             throw new NotFoundHttpException('Company not found.');
+        }
+
+        $errors = $this->validator->validate(new PatchCompanyValidator($data, $this->validator));
+        if (count($errors) > 0) {
+            throw new ValidationFailedException(new \stdClass(), $errors);
         }
 
         $company = $this->companyService->updateCompany($company, $data);
