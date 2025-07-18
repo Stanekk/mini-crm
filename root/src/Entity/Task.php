@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TaskStatus;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,7 +21,7 @@ class Task
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
@@ -36,6 +37,15 @@ class Task
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Company $company = null;
+
+    #[ORM\Column(enumType: TaskStatus::class)]
+    private ?TaskStatus $status = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->status = TaskStatus::Pending;
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +144,18 @@ class Task
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getStatus(): ?TaskStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(TaskStatus $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
