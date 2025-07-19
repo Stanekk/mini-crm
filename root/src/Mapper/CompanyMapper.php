@@ -3,6 +3,7 @@
 namespace App\Mapper;
 
 use App\Dto\Company\CompanyDto;
+use App\Dto\Company\CompanyShortDto;
 use App\Entity\Company;
 
 class CompanyMapper
@@ -19,6 +20,15 @@ class CompanyMapper
             $company->getUpdatedAt(),
             $company->getNotes(),
             $company->isActive()
+        );
+    }
+
+    public function toShortDto(Company $company): CompanyShortDto
+    {
+        return new CompanyShortDto(
+            $company->getId(),
+            $company->getName(),
+            $company->getEmail(),
         );
     }
 }

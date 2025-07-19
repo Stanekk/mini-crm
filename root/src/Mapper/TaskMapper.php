@@ -30,7 +30,7 @@ class TaskMapper
         }
         $company = $task->getCompany();
         if ($company) {
-            $company = $this->companyMapper->toDto($company);
+            $company = $this->companyMapper->toShortDto($company);
         }
 
         return new TaskDto(
