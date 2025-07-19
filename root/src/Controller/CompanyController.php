@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Dto\CreateCompanyRequestDto;
+use App\Dto\Company\CreateCompanyRequestDto;
 use App\Entity\Company;
 use App\Mapper\CompanyMapper;
 use App\Repository\CompanyRepository;

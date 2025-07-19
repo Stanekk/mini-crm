@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\Client;
+
+use App\Dto\Company\CompanyDto;
 
 final readonly class ClientDto
 {

@@ -2,7 +2,7 @@
 
 namespace App\Mapper;
 
-use App\Dto\ClientDto;
+use App\Dto\Client\ClientDto;
 use App\Entity\Client;
 
 class ClientMapper

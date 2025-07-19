@@ -2,7 +2,7 @@
 
 namespace App\Tests\Mapper;
 
-use App\Dto\ClientDto;
+use App\Dto\Client\ClientDto;
 use App\Entity\Client;
 use App\Mapper\ClientMapper;
 use App\Mapper\CompanyMapper;

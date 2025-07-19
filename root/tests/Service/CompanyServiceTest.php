@@ -2,7 +2,7 @@
 
 namespace App\Tests\Service;
 
-use App\Dto\CreateCompanyRequestDto;
+use App\Dto\Company\CreateCompanyRequestDto;
 use App\Entity\Company;
 use App\Service\CompanyService;
 use Doctrine\ORM\EntityManager;

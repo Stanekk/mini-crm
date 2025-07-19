@@ -2,7 +2,7 @@
 
 namespace App\Tests\Mapper;
 
-use App\Dto\CompanyDto;
+use App\Dto\Company\CompanyDto;
 use App\Entity\Company;
 use App\Mapper\CompanyMapper;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Dto\CreateClientRequestDto;
+use App\Dto\Client\CreateClientRequestDto;
 use App\Entity\Client;
 use App\Helpers\StringSanitizer;
 use Doctrine\ORM\EntityManagerInterface;

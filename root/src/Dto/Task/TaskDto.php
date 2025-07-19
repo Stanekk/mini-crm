@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\Task;
 
+use App\Dto\Client\ClientDto;
+use App\Dto\Company\CompanyDto;
+use App\Dto\UserDto;
 use App\Enum\TaskStatus;
 
 final readonly class TaskDto

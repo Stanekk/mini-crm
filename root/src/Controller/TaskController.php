@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Dto\CreateTaskRequestDto;
+use App\Dto\Task\CreateTaskRequestDto;
 use App\Mapper\TaskMapper;
 use App\Service\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

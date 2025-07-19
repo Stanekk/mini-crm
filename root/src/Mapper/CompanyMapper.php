@@ -2,7 +2,7 @@
 
 namespace App\Mapper;
 
-use App\Dto\CompanyDto;
+use App\Dto\Company\CompanyDto;
 use App\Entity\Company;
 
 class CompanyMapper

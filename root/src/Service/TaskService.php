@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Dto\CreateTaskRequestDto;
+use App\Dto\Task\CreateTaskRequestDto;
 use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
 

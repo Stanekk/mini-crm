@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Dto\CreateClientRequestDto;
+use App\Dto\Client\CreateClientRequestDto;
 use App\Entity\Client;
 use App\Mapper\ClientMapper;
 use App\Repository\ClientRepository;

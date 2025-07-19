@@ -2,7 +2,7 @@
 
 namespace App\Mapper;
 
-use App\Dto\TaskDto;
+use App\Dto\Task\TaskDto;
 use App\Entity\Task;
 
 class TaskMapper
