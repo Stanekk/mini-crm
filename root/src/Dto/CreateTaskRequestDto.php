@@ -22,12 +22,13 @@ final readonly class CreateTaskRequestDto
     #[Assert\Type(type: 'integer', message: 'The value {{ value }} is not a valid {{ type }}.')]
     public ?int $company;
 
-    public function __construct(string $name, string $dueDate, ?string $description = null, ?int $assignedTo = null, ?int $client = null)
+    public function __construct(string $name, string $dueDate, ?string $description = null, ?int $assignedTo = null, ?int $client = null, ?int $company = null)
     {
         $this->name = $name;
         $this->description = $description;
         $this->dueDate = $dueDate;
         $this->assignedTo = $assignedTo;
         $this->client = $client;
+        $this->company = $company;
     }
 }
