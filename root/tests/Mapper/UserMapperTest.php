@@ -2,7 +2,7 @@
 
 namespace App\Tests\Mapper;
 
-use App\Dto\UserDto;
+use App\Dto\User\UserDto;
 use App\Entity\User;
 use App\Mapper\UserMapper;
 use PHPUnit\Framework\TestCase;

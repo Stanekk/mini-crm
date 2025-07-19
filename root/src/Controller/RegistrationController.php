@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Dto\CreateUserRequestDto;
+use App\Dto\User\CreateUserRequestDto;
 use App\Mapper\UserMapper;
 use App\Service\RegisterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

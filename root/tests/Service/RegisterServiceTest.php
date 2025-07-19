@@ -2,7 +2,7 @@
 
 namespace App\Tests\Service;
 
-use App\Dto\CreateUserRequestDto;
+use App\Dto\User\CreateUserRequestDto;
 use App\Entity\User;
 use App\Service\RegisterService;
 use Doctrine\ORM\EntityManager;

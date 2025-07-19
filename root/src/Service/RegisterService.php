@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Dto\CreateUserRequestDto;
+use App\Dto\User\CreateUserRequestDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

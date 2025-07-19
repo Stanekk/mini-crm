@@ -2,7 +2,7 @@
 
 namespace App\Mapper;
 
-use App\Dto\UserDto;
+use App\Dto\User\UserDto;
 use App\Entity\User;
 
 class UserMapper
