@@ -43,4 +43,15 @@ class TaskService
 
         return $task;
     }
+
+    public function getTaskById(int $id): ?Task
+    {
+        $task = $this->em->getRepository(Task::class)->find($id);
+
+        if (!$task) {
+            return null;
+        }
+
+        return $task;
+    }
 }
