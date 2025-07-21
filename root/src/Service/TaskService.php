@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Dto\Task\CreateTaskRequestDto;
 use App\Entity\Task;
+use App\Enum\TaskStatus;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TaskService
@@ -51,6 +52,48 @@ class TaskService
         if (!$task) {
             return null;
         }
+
+        return $task;
+    }
+
+    public function deleteTask(Task $task): void
+    {
+        $this->em->remove($task);
+        $this->em->flush();
+    }
+
+    public function updateTask(Task $task, array $data): Task
+    {
+        if (array_key_exists('name', $data) && null !== $data['name']) {
+            $task->setName($data['name']);
+        }
+        if (array_key_exists('description', $data)) {
+            $task->setDescription($data['description']);
+        }
+        if (array_key_exists('dueDate', $data) && null !== $data['dueDate']) {
+            $dueDate = new \DateTimeImmutable($data['dueDate']);
+            $task->setDueDate($dueDate);
+        }
+        if (array_key_exists('company', $data)) {
+            if (null !== $data['company']) {
+                $company = $this->companyService->getCompanyById($data['company']);
+                $task->setCompany($company);
+            } else {
+                $task->setCompany(null);
+            }
+        }
+        if (array_key_exists('client', $data)) {
+            if (null !== $data['client']) {
+                $client = $this->clientService->getClientById($data['client']);
+                $task->setClient($client);
+            } else {
+                $task->setClient(null);
+            }
+        }
+        if (array_key_exists('status', $data) && null !== $data['status']) {
+            $task->setStatus(TaskStatus::from($data['status']));
+        }
+        $task->setUpdatedAt(new \DateTimeImmutable());
 
         return $task;
     }
