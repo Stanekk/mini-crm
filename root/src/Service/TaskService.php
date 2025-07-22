@@ -26,12 +26,17 @@ class TaskService
     {
         $company = null;
         $client = null;
+        $user = null;
 
         if ($dto->company) {
             $company = $this->companyService->getCompanyById($dto->company);
         }
         if ($dto->client) {
             $client = $this->clientService->getClientById($dto->client);
+        }
+
+        if ($dto->assignedTo) {
+            $user = $this->userService->getUserById($dto->assignedTo);
         }
 
         $dueDate = new \DateTimeImmutable($dto->dueDate);
@@ -41,6 +46,7 @@ class TaskService
         $task->setDueDate($dueDate);
         $task->setCompany($company);
         $task->setClient($client);
+        $task->setAssignedTo($user);
         $this->em->persist($task);
         $this->em->flush();
 
