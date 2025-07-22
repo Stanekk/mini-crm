@@ -57,7 +57,6 @@ class TaskMapperTest extends TestCase
         $this->assertEquals(new \DateTimeImmutable('2025-07-26 12:00:00'), $dto->dueDate);
     }
 
-
     public function testToDtoWithoutClientAndCompanyAndUnassigned(): void
     {
         $task = $this->createBasicTask();
