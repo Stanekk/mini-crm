@@ -69,5 +69,15 @@ class PatchTaskValidator
                 }
             }
         }));
+
+        $metadata->addPropertyConstraint('data', new Assert\Callback(function ($payload, $context) {
+            if (array_key_exists('assignedTo', $payload)) {
+                if (is_string($payload['assignedTo'])) {
+                    $context->buildViolation('Invalid assigned to id.')
+                        ->atPath('assignedTo')
+                        ->addViolation();
+                }
+            }
+        }));
     }
 }

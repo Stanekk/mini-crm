@@ -12,12 +12,14 @@ class TaskService
     private EntityManagerInterface $em;
     private CompanyService $companyService;
     private ClientService $clientService;
+    private UserService $userService;
 
-    public function __construct(EntityManagerInterface $em, CompanyService $companyService, ClientService $clientService)
+    public function __construct(EntityManagerInterface $em, CompanyService $companyService, ClientService $clientService, UserService $userService)
     {
         $this->em = $em;
         $this->companyService = $companyService;
         $this->clientService = $clientService;
+        $this->userService = $userService;
     }
 
     public function create(CreateTaskRequestDto $dto): Task
@@ -88,6 +90,14 @@ class TaskService
                 $task->setClient($client);
             } else {
                 $task->setClient(null);
+            }
+        }
+        if (array_key_exists('assignedTo', $data)) {
+            if (null !== $data['assignedTo']) {
+                $user = $this->userService->getUserById($data['assignedTo']);
+                $task->setAssignedTo($user);
+            } else {
+                $task->setAssignedTo(null);
             }
         }
         if (array_key_exists('status', $data) && null !== $data['status']) {
