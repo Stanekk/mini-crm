@@ -3,6 +3,8 @@
 namespace App\Tests\Service;
 
 use App\Dto\Task\CreateTaskRequestDto;
+use App\Entity\Client;
+use App\Entity\Company;
 use App\Entity\Task;
 use App\Enum\TaskStatus;
 use App\Service\ClientService;
@@ -14,10 +16,11 @@ use PHPUnit\Framework\TestCase;
 
 class TaskServiceTest extends TestCase
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
     private TaskService $taskService;
     private CompanyService $companyService;
     private UserService $userService;
+    private ClientService $clientService;
 
     public function setUp(): void
     {
@@ -44,5 +47,31 @@ class TaskServiceTest extends TestCase
         $this->assertNull($task->getClient());
         $this->assertNull($task->getCompany());
         $this->assertSame(TaskStatus::Pending, $task->getStatus());
+    }
+
+    public function testCreateTaskWithCompany(): void
+    {
+        $createTaskRequestDto = new CreateTaskRequestDto('Call to the client', '2025-07-22 19:20:00', null, null, null, 1);
+        $companyMock = $this->createMock(Company::class);
+
+        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
+        $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Task::class));
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $task = $this->taskService->create($createTaskRequestDto);
+        $this->assertSame($companyMock, $task->getCompany());
+    }
+
+    public function testCreateTaskWithClient(): void
+    {
+        $createTaskRequestDto = new CreateTaskRequestDto('Call to the client', '2025-07-22 19:20:00', null, null, 1, null);
+        $clientMock = $this->createMock(Client::class);
+
+        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
+        $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Task::class));
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $task = $this->taskService->create($createTaskRequestDto);
+        $this->assertSame($clientMock, $task->getClient());
     }
 }
