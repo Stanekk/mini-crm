@@ -6,6 +6,7 @@ use App\Dto\Task\CreateTaskRequestDto;
 use App\Entity\Client;
 use App\Entity\Company;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Enum\TaskStatus;
 use App\Service\ClientService;
 use App\Service\CompanyService;
@@ -73,5 +74,37 @@ class TaskServiceTest extends TestCase
 
         $task = $this->taskService->create($createTaskRequestDto);
         $this->assertSame($clientMock, $task->getClient());
+    }
+
+    public function testCreateTaskWithAssignedUser(): void
+    {
+        $createTaskRequestDto = new CreateTaskRequestDto('Call to the client', '2025-07-22 19:20:00', null, 1, null, null);
+        $userMock = $this->createMock(User::class);
+
+        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
+        $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Task::class));
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $task = $this->taskService->create($createTaskRequestDto);
+        $this->assertSame($userMock, $task->getAssignedTo());
+    }
+
+    public function testCreateTaskWithCompanyAndClientAndAssignedUser(): void
+    {
+        $createTaskRequestDto = new CreateTaskRequestDto('Call to the client', '2025-07-22 19:20:00', null, 1, 1, 1);
+        $userMock = $this->createMock(User::class);
+        $clientMock = $this->createMock(Client::class);
+        $companyMock = $this->createMock(Company::class);
+
+        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
+        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
+        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
+        $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Task::class));
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $task = $this->taskService->create($createTaskRequestDto);
+        $this->assertSame($userMock, $task->getAssignedTo());
+        $this->assertSame($clientMock, $task->getClient());
+        $this->assertSame($companyMock, $task->getCompany());
     }
 }
