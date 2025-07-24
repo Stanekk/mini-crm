@@ -107,4 +107,44 @@ class TaskServiceTest extends TestCase
         $this->assertSame($clientMock, $task->getClient());
         $this->assertSame($companyMock, $task->getCompany());
     }
+
+    public function testUpdateTaskWithFullData(): void
+    {
+        $updateData = [
+            'name' => 'Task new name',
+            'dueDate' => '2025-07-22 19:20:00',
+            'description' => 'Task new description',
+            'company' => 1,
+            'assignedTo' => 1,
+            'status' => TaskStatus::Cancelled->value,
+            'client' => 1,
+        ];
+
+        $companyMock = $this->createMock(Company::class);
+        $userMock = $this->createMock(User::class);
+        $clientMock = $this->createMock(Client::class);
+
+        $task = new Task();
+        $task->setName('Call to the client');
+        $task->setDescription('Call to the client from company X');
+        $task->setDueDate(new \DateTimeImmutable('2025-01-22 19:20:00'));
+        $task->setCompany(null);
+        $task->setAssignedTo(null);
+        $task->setStatus(TaskStatus::Pending);
+        $task->setClient(null);
+
+        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
+        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
+        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
+
+        $updatedTask = $this->taskService->updateTask($task, $updateData);
+
+        $this->assertSame('Task new name', $updatedTask->getName());
+        $this->assertSame('Task new description', $updatedTask->getDescription());
+        $this->assertSame(TaskStatus::Cancelled, $updatedTask->getStatus());
+        $this->assertEquals(new \DateTimeImmutable('2025-07-22 19:20:00'), $updatedTask->getDueDate());
+        $this->assertSame($companyMock, $updatedTask->getCompany());
+        $this->assertSame($userMock, $updatedTask->getAssignedTo());
+        $this->assertSame($clientMock, $updatedTask->getClient());
+    }
 }
