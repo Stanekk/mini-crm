@@ -12,6 +12,8 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - main_app
 
   php:
     build:
@@ -23,6 +25,8 @@ services:
       - ./root:/var/www/html
     depends_on:
       - mysql
+    networks:
+      - main_app
 
   nginx:
     image: nginx:stable-perl
@@ -35,6 +39,8 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php
+    networks:
+      - main_app
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -49,12 +55,20 @@ services:
       - "8081:80"
     depends_on:
       - mysql
+    networks:
+      - main_app
 
   mailhog:
-    image: 42bv/mailhog
+    image: mailhog/mailhog
+    container_name: mailhog
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - main_app
 
 volumes:
   mysql_data:
+
+networks:
+  main_app:
