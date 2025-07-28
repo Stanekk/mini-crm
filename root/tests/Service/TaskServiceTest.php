@@ -147,4 +147,23 @@ class TaskServiceTest extends TestCase
         $this->assertSame($userMock, $updatedTask->getAssignedTo());
         $this->assertSame($clientMock, $updatedTask->getClient());
     }
+
+    public function testUpdateTaskWithNonExistingCompany(): void
+    {
+        $updateData = [
+            'company' => 123
+        ];
+
+        $companyMock = $this->createMock(Company::class);
+
+        $task = new Task();
+        $task->setName('Call to the client');
+        $task->setDescription('Call to the client from company X');
+        $task->setCompany($companyMock);
+
+        $this->companyService->expects($this->once())->method('getCompanyById')->with(123)->willReturn(null);
+
+        $updatedTask = $this->taskService->updateTask($task, $updateData);
+        $this->assertNull($updatedTask->getCompany());
+    }
 }
