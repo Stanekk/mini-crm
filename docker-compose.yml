@@ -50,5 +50,11 @@ services:
     depends_on:
       - mysql
 
+  mailhog:
+    image: 42bv/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 volumes:
   mysql_data:
