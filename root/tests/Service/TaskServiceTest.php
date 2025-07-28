@@ -96,9 +96,8 @@ class TaskServiceTest extends TestCase
         $clientMock = $this->createMock(Client::class);
         $companyMock = $this->createMock(Company::class);
 
-        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
-        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
-        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
+        $this->expectsMocks($userMock, $clientMock, $companyMock);
+
         $this->entityManager->expects($this->once())->method('persist')->with($this->isInstanceOf(Task::class));
         $this->entityManager->expects($this->once())->method('flush');
 
@@ -133,9 +132,7 @@ class TaskServiceTest extends TestCase
         $task->setStatus(TaskStatus::Pending);
         $task->setClient(null);
 
-        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
-        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
-        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
+        $this->expectsMocks($userMock, $clientMock, $companyMock);
 
         $updatedTask = $this->taskService->updateTask($task, $updateData);
 
@@ -151,7 +148,7 @@ class TaskServiceTest extends TestCase
     public function testUpdateTaskWithNonExistingCompany(): void
     {
         $updateData = [
-            'company' => 123
+            'company' => 123,
         ];
 
         $companyMock = $this->createMock(Company::class);
@@ -165,5 +162,12 @@ class TaskServiceTest extends TestCase
 
         $updatedTask = $this->taskService->updateTask($task, $updateData);
         $this->assertNull($updatedTask->getCompany());
+    }
+
+    private function expectsMocks($userMock, $clientMock, $companyMock): void
+    {
+        $this->userService->expects($this->once())->method('getUserById')->with(1)->willReturn($userMock);
+        $this->clientService->expects($this->once())->method('getClientById')->with(1)->willReturn($clientMock);
+        $this->companyService->expects($this->once())->method('getCompanyById')->with(1)->willReturn($companyMock);
     }
 }
