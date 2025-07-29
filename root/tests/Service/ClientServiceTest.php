@@ -9,18 +9,21 @@ use App\Service\ClientService;
 use App\Service\CompanyService;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClientServiceTest extends TestCase
 {
     private $entityManager;
     private $companyService;
     private ClientService $clientService;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManager::class);
         $this->companyService = $this->createMock(CompanyService::class);
-        $this->clientService = new ClientService($this->entityManager, $this->companyService);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->clientService = new ClientService($this->entityManager, $this->companyService, $this->eventDispatcher);
     }
 
     public function testCreateClientWithoutCompany(): void

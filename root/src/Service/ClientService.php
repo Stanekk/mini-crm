@@ -4,19 +4,23 @@ namespace App\Service;
 
 use App\Dto\Client\CreateClientRequestDto;
 use App\Entity\Client;
+use App\Event\ClientCreatedEvent;
 use App\Helpers\StringSanitizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClientService
 {
     private EntityManagerInterface $em;
     private CompanyService $companyService;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EntityManagerInterface $entityManager, CompanyService $companyService)
+    public function __construct(EntityManagerInterface $entityManager, CompanyService $companyService, EventDispatcherInterface $eventDispatcher)
     {
         $this->em = $entityManager;
         $this->companyService = $companyService;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function create(CreateClientRequestDto $dto): Client
@@ -40,6 +44,9 @@ class ClientService
         $this->em->persist($client);
 
         $this->em->flush();
+
+        $clientCreatedEvent = new ClientCreatedEvent($client);
+        $this->eventDispatcher->dispatch($clientCreatedEvent);
 
         return $client;
     }
