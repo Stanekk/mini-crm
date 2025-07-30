@@ -19,12 +19,12 @@ class EmailService
 
     private function prepareBaseEmail(string $email, string $from, string $subject, string $templatePath): TemplatedEmail
     {
-        $email = (new TemplatedEmail())->from($from)
+        $baseEmail = (new TemplatedEmail())->from($from)
             ->to(new Address($email))
             ->subject($subject)
             ->htmlTemplate($templatePath);
 
-        return $email;
+        return $baseEmail;
     }
 
     public function sendClientWelcomeEmail(Client $client): void
