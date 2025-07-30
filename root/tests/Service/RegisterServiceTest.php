@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Service\RegisterService;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegisterServiceTest extends TestCase
@@ -14,12 +15,14 @@ class RegisterServiceTest extends TestCase
     private $entityManager;
     private $passwordHasher;
     private $registerService;
+    private $eventDispatcher;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManager::class);
         $this->passwordHasher = $this->createMock(UserPasswordHasherInterface::class);
-        $this->registerService = new RegisterService($this->entityManager, $this->passwordHasher);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->registerService = new RegisterService($this->entityManager, $this->passwordHasher, $this->eventDispatcher);
     }
 
     public function testRegisterUser(): void

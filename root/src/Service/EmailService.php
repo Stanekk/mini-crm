@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Client;
+use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -30,6 +31,13 @@ class EmailService
     {
         $preparedEmail = $this->prepareBaseEmail($client->getEmail(), 'mini@crm.pl', 'Welcome!', 'emails/client_welcome.html.twig');
         $preparedEmail->context(['clientName' => $client->getEmail()]);
+        $this->mailer->send($preparedEmail);
+    }
+
+    public function sendUserWelcomeEmail(User $user): void
+    {
+        $preparedEmail = $this->prepareBaseEmail($user->getEmail(), 'mini@crm.pl', 'Welcome!', 'emails/user_welcome.html.twig');
+        $preparedEmail->context(['userName' => $user->getEmail()]);
         $this->mailer->send($preparedEmail);
     }
 }
