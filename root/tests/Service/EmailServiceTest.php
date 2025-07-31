@@ -10,7 +10,7 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class EmailServiceTest extends TestCase
 {
-    private $emailService;
+    private EmailService $emailService;
     private MailerInterface $mailer;
 
     public function setUp(): void

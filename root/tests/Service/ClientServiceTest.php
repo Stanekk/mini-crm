@@ -8,15 +8,17 @@ use App\Entity\Company;
 use App\Service\ClientService;
 use App\Service\CompanyService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClientServiceTest extends TestCase
 {
-    private $entityManager;
-    private $companyService;
+    private EntityManagerInterface&MockObject $entityManager;
+    private CompanyService&MockObject $companyService;
     private ClientService $clientService;
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     public function setUp(): void
     {

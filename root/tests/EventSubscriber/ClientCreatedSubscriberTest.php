@@ -6,11 +6,12 @@ use App\Entity\Client;
 use App\Event\ClientCreatedEvent;
 use App\EventSubscriber\ClientCreatedSubscriber;
 use App\Service\EmailService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ClientCreatedSubscriberTest extends TestCase
 {
-    private $emailService;
+    private EmailService&MockObject $emailService;
 
     public function setUp(): void
     {

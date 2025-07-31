@@ -6,11 +6,13 @@ use App\Dto\Company\CreateCompanyRequestDto;
 use App\Entity\Company;
 use App\Service\CompanyService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CompanyServiceTest extends TestCase
 {
-    private $entityManager;
+    private EntityManagerInterface&MockObject $entityManager;
     private CompanyService $companyService;
 
     public function setUp(): void

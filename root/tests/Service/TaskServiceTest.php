@@ -13,15 +13,16 @@ use App\Service\CompanyService;
 use App\Service\TaskService;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class TaskServiceTest extends TestCase
 {
-    private EntityManagerInterface $entityManager;
+    private EntityManagerInterface&MockObject $entityManager;
     private TaskService $taskService;
-    private CompanyService $companyService;
-    private UserService $userService;
-    private ClientService $clientService;
+    private CompanyService&MockObject $companyService;
+    private UserService&MockObject $userService;
+    private ClientService&MockObject $clientService;
 
     public function setUp(): void
     {

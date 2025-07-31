@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClientMapperTest extends TestCase
 {
-    private $companyMapper;
+    private CompanyMapper $companyMapper;
 
     public function setUp(): void
     {

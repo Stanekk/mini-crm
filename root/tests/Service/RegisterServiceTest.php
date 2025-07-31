@@ -6,16 +6,18 @@ use App\Dto\User\CreateUserRequestDto;
 use App\Entity\User;
 use App\Service\RegisterService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegisterServiceTest extends TestCase
 {
-    private $entityManager;
-    private $passwordHasher;
-    private $registerService;
-    private $eventDispatcher;
+    private EntityManagerInterface&MockObject $entityManager;
+    private UserPasswordHasherInterface&MockObject $passwordHasher;
+    private RegisterService $registerService;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {
