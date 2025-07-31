@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Mapper\ClientMapper;
 use App\Repository\ClientRepository;
 use App\Service\ClientService;
+use App\Service\PaginationService;
 use App\Validator\PatchClientValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,22 +25,28 @@ class ClientController extends AbstractController
     private ClientMapper $clientMapper;
     private ClientService $clientService;
     private ValidatorInterface $validator;
+    private PaginationService $paginationService;
 
-    public function __construct(ClientRepository $clientRepository, ClientMapper $clientMapper, ClientService $clientService, ValidatorInterface $validator)
+    public function __construct(ClientRepository $clientRepository, ClientMapper $clientMapper, ClientService $clientService, ValidatorInterface $validator, PaginationService $paginationService)
     {
         $this->clientRepository = $clientRepository;
         $this->clientMapper = $clientMapper;
         $this->clientService = $clientService;
         $this->validator = $validator;
+        $this->paginationService = $paginationService;
     }
 
     #[Route('/api/clients', name: 'app_client_list', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $clients = $this->clientRepository->findAll();
-        $clientsDto = array_map(fn (Client $client) => $this->clientMapper->toDto($client), $clients);
+        $page = max(1, $request->query->getInt('page', 1));
+        $qb = $this->clientRepository->createQueryBuilder('client');
 
-        return new JsonResponse($clientsDto, Response::HTTP_OK);
+        $result = $this->paginationService->paginate($qb, $page,
+            fn (Client $client) => $this->clientMapper->toDto($client)
+        );
+
+        return new JsonResponse($result, Response::HTTP_OK);
     }
 
     #[Route('/api/clients', name: 'app_client_create', methods: ['POST'])]
