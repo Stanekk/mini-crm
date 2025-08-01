@@ -6,6 +6,7 @@ use App\Dto\Task\CreateTaskRequestDto;
 use App\Entity\Task;
 use App\Mapper\TaskMapper;
 use App\Repository\TaskRepository;
+use App\Service\PaginationService;
 use App\Service\TaskService;
 use App\Validator\PatchTaskValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,13 +25,15 @@ class TaskController extends AbstractController
     private TaskMapper $taskMapper;
     private TaskRepository $taskRepository;
     private ValidatorInterface $validator;
+    private PaginationService $paginationService;
 
-    public function __construct(TaskService $taskService, TaskMapper $taskMapper, TaskRepository $taskRepository, ValidatorInterface $validator)
+    public function __construct(TaskService $taskService, TaskMapper $taskMapper, TaskRepository $taskRepository, ValidatorInterface $validator, PaginationService $paginationService)
     {
         $this->taskService = $taskService;
         $this->taskMapper = $taskMapper;
         $this->taskRepository = $taskRepository;
         $this->validator = $validator;
+        $this->paginationService = $paginationService;
     }
 
     #[Route('/api/tasks', name: 'app_task_create', methods: ['POST'])]
@@ -43,12 +46,16 @@ class TaskController extends AbstractController
     }
 
     #[Route('/api/tasks', name: 'app_task_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
-        $tasks = $this->taskRepository->findAll();
-        $tasksDto = array_map(fn (Task $task) => $this->taskMapper->toDto($task), $tasks);
+        $page = max(1, $request->query->getInt('page', 1));
+        $qb = $this->taskRepository->createQueryBuilder('task');
 
-        return new JsonResponse($tasksDto, Response::HTTP_OK);
+        $result = $this->paginationService->paginate($qb, $page,
+            fn (Task $task) => $this->taskMapper->toDto($task)
+        );
+
+        return new JsonResponse($result, Response::HTTP_OK);
     }
 
     #[Route('/api/tasks/{id}', name: 'app_task_details', methods: ['GET'])]

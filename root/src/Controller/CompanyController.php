@@ -7,6 +7,7 @@ use App\Entity\Company;
 use App\Mapper\CompanyMapper;
 use App\Repository\CompanyRepository;
 use App\Service\CompanyService;
+use App\Service\PaginationService;
 use App\Validator\PatchCompanyValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,22 +25,28 @@ class CompanyController extends AbstractController
     private CompanyMapper $companyMapper;
     private CompanyRepository $companyRepository;
     private ValidatorInterface $validator;
+    private PaginationService $paginationService;
 
-    public function __construct(CompanyService $companyService, CompanyMapper $companyMapper, CompanyRepository $companyRepository, ValidatorInterface $validator)
+    public function __construct(CompanyService $companyService, CompanyMapper $companyMapper, CompanyRepository $companyRepository, ValidatorInterface $validator, PaginationService $paginationService)
     {
         $this->companyService = $companyService;
         $this->companyMapper = $companyMapper;
         $this->companyRepository = $companyRepository;
         $this->validator = $validator;
+        $this->paginationService = $paginationService;
     }
 
     #[Route('/api/companies', name: 'app_company_list', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $companies = $this->companyRepository->findAll();
-        $companiesDto = array_map(fn (Company $company) => $this->companyMapper->toDto($company), $companies);
+        $page = max(1, $request->query->getInt('page', 1));
+        $qb = $this->companyRepository->createQueryBuilder('company');
 
-        return new JsonResponse($companiesDto, Response::HTTP_OK);
+        $result = $this->paginationService->paginate($qb, $page,
+            fn (Company $company) => $this->companyMapper->toDto($company)
+        );
+
+        return new JsonResponse($result, Response::HTTP_OK);
     }
 
     #[Route('/api/companies', name: 'app_company_create', methods: ['POST'])]
