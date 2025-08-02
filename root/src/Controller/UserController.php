@@ -37,4 +37,15 @@ class UserController extends AbstractController
 
         return new JsonResponse($result, Response::HTTP_OK);
     }
+
+    #[Route('/api/me', name: 'app_me', methods: ['GET'])]
+    public function me(): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+        $currentUser = $this->getUser();
+        $userDto = $this->userMapper->toDto($currentUser);
+
+        return new JsonResponse($userDto, Response::HTTP_OK);
+    }
 }
