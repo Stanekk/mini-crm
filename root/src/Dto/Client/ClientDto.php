@@ -2,18 +2,18 @@
 
 namespace App\Dto\Client;
 
-use App\Dto\Company\CompanyDto;
+use App\Dto\Company\CompanyShortDto;
 
 final readonly class ClientDto
 {
     public int $id;
     public string $firstName;
     public string $lastName;
-    public ?CompanyDto $company;
+    public ?CompanyShortDto $company;
     public string $email;
     public ?string $phone;
 
-    public function __construct(int $id, string $firstName, string $lastName, ?CompanyDto $company, string $email, ?string $phone)
+    public function __construct(int $id, string $firstName, string $lastName, ?CompanyShortDto $company, string $email, ?string $phone)
     {
         $this->id = $id;
         $this->firstName = $firstName;
