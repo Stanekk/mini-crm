@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\Role;
 use App\Mapper\UserMapper;
 use App\Repository\UserRepository;
 use App\Service\PaginationService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
@@ -17,12 +20,14 @@ class UserController extends AbstractController
     private UserRepository $userRepository;
     private UserMapper $userMapper;
     private PaginationService $paginationService;
+    private UserService $userService;
 
-    public function __construct(UserRepository $repository, UserMapper $userMapper, PaginationService $paginationService)
+    public function __construct(UserRepository $repository, UserMapper $userMapper, PaginationService $paginationService, UserService $userService)
     {
         $this->userRepository = $repository;
         $this->userMapper = $userMapper;
         $this->paginationService = $paginationService;
+        $this->userService = $userService;
     }
 
     #[Route('/api/users', name: 'app_users_list', methods: ['GET'])]
@@ -36,6 +41,22 @@ class UserController extends AbstractController
         );
 
         return new JsonResponse($result, Response::HTTP_OK);
+    }
+
+    #[Route('/api/users/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+    public function delete(int $id): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Role::Admin->value);
+
+        $user = $this->userService->getUserById($id);
+
+        if (!$user) {
+            throw new NotFoundHttpException('User not found');
+        }
+
+        $this->userService->deleteUser($user);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/api/me', name: 'app_me', methods: ['GET'])]
