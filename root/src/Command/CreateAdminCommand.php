@@ -2,22 +2,30 @@
 
 namespace App\Command;
 
+use App\Dto\User\CreateUserRequestDto;
+use App\Enum\Role;
 use App\Repository\UserRepository;
+use App\Service\RegisterService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(name: 'app:create-admin-user', description: 'Create admin user', help: 'A basic command for create user with admin permissions')]
 class CreateAdminCommand extends Command
 {
     private UserRepository $userRepository;
+    private ValidatorInterface $validator;
+    private RegisterService $registerService;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ValidatorInterface $validator, RegisterService $registerService)
     {
         $this->userRepository = $userRepository;
+        $this->validator = $validator;
+        $this->registerService = $registerService;
         parent::__construct();
     }
 
@@ -35,38 +43,31 @@ class CreateAdminCommand extends Command
         $emailQuestion = new Question('Email: ');
         $email = $helper->ask($input, $output, $emailQuestion);
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $output->writeln('<error>Invalid email</error>');
-
-            return Command::FAILURE;
-        }
-
         $passwordQuestion = new Question('Password: ');
         $passwordQuestion->setHidden(true);
         $password = $helper->ask($input, $output, $passwordQuestion);
-
-        if (strlen($password) < 6) {
-            $output->writeln('<error>Passwords is to short</error>');
-
-            return Command::FAILURE;
-        }
 
         $passwordConfirmationQuestion = new Question('Confirm password: ');
         $passwordConfirmationQuestion->setHidden(true);
         $passwordConfirmation = $helper->ask($input, $output, $passwordConfirmationQuestion);
 
-        if ($password !== $passwordConfirmation) {
-            $output->writeln('<error>Passwords do not match</error>');
+        $createUserRequestDto = new CreateUserRequestDto($email, $password, $passwordConfirmation);
+        $errors = $this->validator->validate($createUserRequestDto);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $output->writeln('<error>'.$error->getPropertyPath().': '.$error->getMessage().'</error>');
+            }
 
             return Command::FAILURE;
         }
 
-        $userExists = $this->userRepository->findOneBy(['email' => $email]);
-        if ($userExists) {
-            $output->writeln('<error>This email: '.$email.' is already taken </error>');
-
-            return Command::FAILURE;
-        }
+        $admin = $this->registerService->registerUser($createUserRequestDto, Role::Admin);
+        $output->writeln([
+            '<info>Admin Created!</info>',
+            '<info>================</info>',
+            '<info>Email: '.$admin->getEmail().'</info>',
+        ]);
 
         return Command::SUCCESS;
     }

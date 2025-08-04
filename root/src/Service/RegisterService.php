@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Dto\User\CreateUserRequestDto;
 use App\Entity\User;
+use App\Enum\Role;
 use App\Event\UserRegisteredEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,12 +23,13 @@ class RegisterService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function registerUser(CreateUserRequestDto $dto): ?User
+    public function registerUser(CreateUserRequestDto $dto, Role $role = Role::User): ?User
     {
         $user = new User();
         $user->setEmail($dto->email);
         $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->password);
         $user->setPassword($hashedPassword);
+        $user->setRoles([$role->value]);
         $this->eventDispatcher->dispatch(new UserRegisteredEvent($user));
         $this->em->persist($user);
         $this->em->flush();
