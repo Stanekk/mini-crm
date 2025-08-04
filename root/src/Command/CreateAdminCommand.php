@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Dto\User\CreateUserRequestDto;
 use App\Enum\Role;
-use App\Repository\UserRepository;
 use App\Service\RegisterService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,13 +16,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[AsCommand(name: 'app:create-admin-user', description: 'Create admin user', help: 'A basic command for create user with admin permissions')]
 class CreateAdminCommand extends Command
 {
-    private UserRepository $userRepository;
     private ValidatorInterface $validator;
     private RegisterService $registerService;
 
-    public function __construct(UserRepository $userRepository, ValidatorInterface $validator, RegisterService $registerService)
+    public function __construct(ValidatorInterface $validator, RegisterService $registerService)
     {
-        $this->userRepository = $userRepository;
         $this->validator = $validator;
         $this->registerService = $registerService;
         parent::__construct();
