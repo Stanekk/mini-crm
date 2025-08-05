@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -34,6 +35,17 @@ class UserService
         if ($currentUser->getId() === $user->getId()) {
             throw new AccessDeniedHttpException('You cannot delete yourself.');
         }
+
+        // Set all tasks of the deleted user as unassigned
+        $this->entityManager->createQueryBuilder()
+            ->update(Task::class, 't')
+            ->set('t.assignedTo', ':null')
+            ->where('t.assignedTo = :user')
+            ->setParameter('null', null)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+
         $this->entityManager->remove($user);
         $this->entityManager->flush();
     }
