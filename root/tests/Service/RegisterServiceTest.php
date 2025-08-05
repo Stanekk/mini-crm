@@ -69,6 +69,5 @@ class RegisterServiceTest extends TestCase
         $this->assertEquals('hashedPassword', $user->getPassword());
         $this->assertContains(Role::Admin->value, $user->getRoles());
         $this->assertContains(Role::User->value, $user->getRoles());
-
     }
 }
