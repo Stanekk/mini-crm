@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Enum\Role;
 use App\Mapper\UserMapper;
 use App\Repository\UserRepository;
+use App\Service\Filter\UserFilterService;
 use App\Service\PaginationService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,13 +22,15 @@ class UserController extends AbstractController
     private UserMapper $userMapper;
     private PaginationService $paginationService;
     private UserService $userService;
+    private UserFilterService $userFilterService;
 
-    public function __construct(UserRepository $repository, UserMapper $userMapper, PaginationService $paginationService, UserService $userService)
+    public function __construct(UserRepository $repository, UserMapper $userMapper, PaginationService $paginationService, UserService $userService, UserFilterService $userFilterService)
     {
         $this->userRepository = $repository;
         $this->userMapper = $userMapper;
         $this->paginationService = $paginationService;
         $this->userService = $userService;
+        $this->userFilterService = $userFilterService;
     }
 
     #[Route('/api/users', name: 'app_users_list', methods: ['GET'])]
@@ -35,6 +38,9 @@ class UserController extends AbstractController
     {
         $page = max(1, $request->query->getInt('page', 1));
         $qb = $this->userRepository->createQueryBuilder('user');
+
+        $userFilter = $this->userFilterService->createFilterFromRequest($request);
+        $this->userFilterService->applyFilters($qb, $userFilter);
 
         $result = $this->paginationService->paginate($qb, $page,
             fn (User $user) => $this->userMapper->toDto($user)
