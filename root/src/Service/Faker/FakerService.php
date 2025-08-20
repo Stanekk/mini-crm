@@ -26,7 +26,6 @@ class FakerService
     {
         $user = new User();
         $user->setEmail($this->faker->unique()->safeEmail());
-        $user->setPassword($this->faker->password());
         $hashedPassword = $this->passwordHasher->hashPassword($user, 'password!');
         $user->setPassword($hashedPassword);
 
