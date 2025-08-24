@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Company;
 use App\Entity\Task;
 use App\Entity\User;
+use App\Enum\DataSource;
 use App\Enum\TaskStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
@@ -31,6 +32,7 @@ class FakerService
         $user->setEmail($this->faker->unique()->safeEmail());
         $hashedPassword = $this->passwordHasher->hashPassword($user, 'password!');
         $user->setPassword($hashedPassword);
+        $user->setSource(DataSource::Faker);
 
         return $user;
     }
