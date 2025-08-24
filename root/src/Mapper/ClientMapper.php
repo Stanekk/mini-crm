@@ -25,6 +25,7 @@ class ClientMapper
             $client->getId(),
             $client->getFirstName(),
             $client->getLastName(),
+            $client->getSource(),
             $companyDtoShortDto,
             $client->getEmail(),
             $client->getPhone(),

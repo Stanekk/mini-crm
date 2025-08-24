@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client
+class Client extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,6 +39,7 @@ class Client
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getId(): ?int

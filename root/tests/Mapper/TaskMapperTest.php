@@ -122,6 +122,7 @@ class TaskMapperTest extends TestCase
             id: 22,
             firstName: 'Anna',
             lastName: 'Nowak',
+            dataSource: DataSource::Faker,
             company: null,
             email: 'anna@example.com',
             phone: '12345678',
