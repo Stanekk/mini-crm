@@ -27,7 +27,7 @@ final readonly class CompanyDto
         \DateTimeImmutable $updatedAt,
         ?string $notes,
         bool $isActive,
-        DataSource $dataSource
+        DataSource $dataSource,
     ) {
         $this->id = $id;
         $this->name = $name;

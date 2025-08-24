@@ -7,6 +7,7 @@ use App\Dto\Company\CompanyShortDto;
 use App\Entity\Client;
 use App\Entity\Company;
 use App\Entity\Task;
+use App\Enum\DataSource;
 use App\Enum\TaskStatus;
 use App\Mapper\ClientMapper;
 use App\Mapper\CompanyMapper;
@@ -88,6 +89,7 @@ class TaskMapperTest extends TestCase
             id: 99,
             name: 'Apple',
             email: 'contact@apple.com',
+            source: DataSource::Faker
         );
 
         $this->companyMapper
