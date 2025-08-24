@@ -43,6 +43,7 @@ class FakerService
         $task->setName($this->faker->sentence(7));
         $task->setDescription($this->faker->text());
         $task->setStatus($this->faker->randomElement(TaskStatus::cases()));
+        $task->setSource(DataSource::Faker);
 
         return $task;
     }
@@ -56,6 +57,7 @@ class FakerService
         $vat = 'PL'.$nip;
         $company->setNipNumber($nip);
         $company->setVatNumber($vat);
+        $company->setSource(DataSource::Faker);
 
         return $company;
     }
@@ -67,6 +69,7 @@ class FakerService
         $client->setPhone($this->faker->phoneNumber());
         $client->setFirstName($this->faker->firstName());
         $client->setLastName($this->faker->lastName());
+        $client->setSource(DataSource::Faker);
 
         return $client;
     }
