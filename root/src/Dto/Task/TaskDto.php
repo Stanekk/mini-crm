@@ -5,6 +5,7 @@ namespace App\Dto\Task;
 use App\Dto\Client\ClientDto;
 use App\Dto\Company\CompanyShortDto;
 use App\Dto\User\UserDto;
+use App\Enum\DataSource;
 use App\Enum\TaskStatus;
 
 final readonly class TaskDto
@@ -19,8 +20,9 @@ final readonly class TaskDto
     public ?ClientDto $client;
     public ?CompanyShortDto $company;
     public TaskStatus $status;
+    public DataSource $source;
 
-    public function __construct(int $id, string $name, ?string $description, \DateTimeImmutable $dueDate, \DateTimeImmutable $createdAt, ?\DateTimeImmutable $updatedAt, ?UserDto $assignedTo, ?ClientDto $client, ?CompanyShortDto $company, TaskStatus $status)
+    public function __construct(int $id, string $name, ?string $description, \DateTimeImmutable $dueDate, \DateTimeImmutable $createdAt, ?\DateTimeImmutable $updatedAt, ?UserDto $assignedTo, ?ClientDto $client, ?CompanyShortDto $company, TaskStatus $status, DataSource $source)
     {
         $this->id = $id;
         $this->name = $name;
@@ -32,5 +34,6 @@ final readonly class TaskDto
         $this->client = $client;
         $this->company = $company;
         $this->status = $status;
+        $this->source = $source;
     }
 }

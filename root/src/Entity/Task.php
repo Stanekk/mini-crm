@@ -7,7 +7,7 @@ use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-class Task
+class Task extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -45,6 +45,7 @@ class Task
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->status = TaskStatus::Pending;
+        parent::__construct();
     }
 
     public function getId(): ?int
