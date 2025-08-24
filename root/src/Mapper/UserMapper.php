@@ -12,7 +12,8 @@ class UserMapper
         return new UserDto(
             $user->getId(),
             $user->getEmail(),
-            $user->getRoles()
+            $user->getRoles(),
+            $user->getSource()
         );
     }
 }

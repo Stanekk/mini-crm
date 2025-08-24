@@ -4,6 +4,7 @@ namespace App\Tests\Mapper;
 
 use App\Dto\User\UserDto;
 use App\Entity\User;
+use App\Enum\DataSource;
 use App\Mapper\UserMapper;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +18,7 @@ class UserMapperTest extends TestCase
         $property->setAccessible(true);
         $property->setValue($user, 123);
         $user->setEmail('email@example.com');
+        $user->setSource(DataSource::Faker);
 
         $mapper = new UserMapper();
         $dto = $mapper->toDto($user);
@@ -24,5 +26,6 @@ class UserMapperTest extends TestCase
         $this->assertInstanceOf(UserDto::class, $dto);
         $this->assertEquals(123, $dto->id);
         $this->assertEquals('email@example.com', $dto->email);
+        $this->assertEquals(DataSource::Faker, $dto->source);
     }
 }
