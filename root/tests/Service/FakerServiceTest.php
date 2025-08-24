@@ -4,6 +4,7 @@ namespace App\Tests\Service;
 
 use App\Enum\TaskStatus;
 use App\Service\Faker\FakerService;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -14,8 +15,9 @@ class FakerServiceTest extends TestCase
     public function setUp(): void
     {
         $hasher = $this->createMock(UserPasswordHasherInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
         $hasher->method('hashPassword')->willReturn('password!');
-        $this->faker = new FakerService($hasher);
+        $this->faker = new FakerService($hasher, $entityManager);
     }
 
     public function testGenerateFakeUser()
