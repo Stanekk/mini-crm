@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\DataSource;
 use App\Enum\Role;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -41,13 +40,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignedTo')]
     private Collection $tasks;
 
-    #[ORM\Column(enumType: DataSource::class)]
-    private ?DataSource $source = null;
-
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
-        $this->setSource(DataSource::App);
+        parent::__construct();
     }
 
     public function getId(): ?int
@@ -149,18 +145,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $task->setAssignedTo(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSource(): ?DataSource
-    {
-        return $this->source;
-    }
-
-    public function setSource(DataSource $source): static
-    {
-        $this->source = $source;
 
         return $this;
     }
