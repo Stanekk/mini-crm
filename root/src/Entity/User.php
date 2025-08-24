@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\DataSource;
 use App\Enum\Role;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -40,9 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignedTo')]
     private Collection $tasks;
 
+    #[ORM\Column(enumType: DataSource::class)]
+    private ?DataSource $source = null;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->setSource(DataSource::App);
     }
 
     public function getId(): ?int
@@ -144,6 +149,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $task->setAssignedTo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSource(): ?DataSource
+    {
+        return $this->source;
+    }
+
+    public function setSource(DataSource $source): static
+    {
+        $this->source = $source;
 
         return $this;
     }
