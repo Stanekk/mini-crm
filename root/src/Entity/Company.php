@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-class Company
+class Company extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -60,6 +60,7 @@ class Company
         $this->isActive = true;
         $this->clients = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getId(): ?int

@@ -2,6 +2,8 @@
 
 namespace App\Dto\Company;
 
+use App\Enum\DataSource;
+
 final readonly class CompanyDto
 {
     public int $id;
@@ -13,6 +15,7 @@ final readonly class CompanyDto
     public \DateTimeImmutable $updatedAt;
     public ?string $notes;
     public bool $isActive;
+    public DataSource $dataSource;
 
     public function __construct(
         int $id,
@@ -24,6 +27,7 @@ final readonly class CompanyDto
         \DateTimeImmutable $updatedAt,
         ?string $notes,
         bool $isActive,
+        DataSource $dataSource
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -34,5 +38,6 @@ final readonly class CompanyDto
         $this->updatedAt = $updatedAt;
         $this->notes = $notes;
         $this->isActive = $isActive;
+        $this->dataSource = $dataSource;
     }
 }

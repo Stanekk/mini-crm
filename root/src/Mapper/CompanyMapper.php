@@ -19,7 +19,8 @@ class CompanyMapper
             $company->getCreatedAt(),
             $company->getUpdatedAt(),
             $company->getNotes(),
-            $company->isActive()
+            $company->isActive(),
+            $company->getSource()
         );
     }
 
@@ -29,6 +30,7 @@ class CompanyMapper
             $company->getId(),
             $company->getName(),
             $company->getEmail(),
+            $company->getSource(),
         );
     }
 }
