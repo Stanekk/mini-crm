@@ -43,6 +43,9 @@ class FakerService
         $task->setName($this->faker->sentence(7));
         $task->setDescription($this->faker->text());
         $task->setStatus($this->faker->randomElement(TaskStatus::cases()));
+        $randomDate = $this->faker->dateTimeBetween('-2 week', '+4 week');
+        $dueDateImmutable = \DateTimeImmutable::createFromMutable($randomDate);
+        $task->setDueDate($dueDateImmutable);
         $task->setSource(DataSource::Faker);
 
         return $task;
@@ -117,4 +120,111 @@ class FakerService
 
         return $generatedCompanies;
     }
+
+    public function assignTasksToUsers(array $tasks, array $users): array
+    {
+        $numberOfTasks = count($tasks);
+        $numberOfUsers = count($users);
+
+        if ($numberOfUsers === 0 || $numberOfTasks === 0) {
+            return [];
+        }
+
+        $unAssignedTasksNumber = rand(0, $numberOfTasks);
+
+        $unAssignedTasks = array_slice($tasks, 0, $unAssignedTasksNumber);
+
+        $restOfTasks = array_slice($tasks, $unAssignedTasksNumber);
+        foreach ($restOfTasks as $restOfTask) {
+            $randomUser = $users[array_rand($users)];
+            $restOfTask->setAssignedTo($randomUser);
+        }
+
+        return array_merge($unAssignedTasks, $restOfTasks);
+    }
+
+    public function assignClientsToCompanies(array $clients, array $companies): array
+    {
+        $numberOfCompanies = count($companies);
+        $numberOfClients = count($clients);
+
+        if ($numberOfCompanies === 0 || $numberOfClients === 0) {
+            return [];
+        }
+
+        $unAssignedClientsNumber = rand(0, $numberOfCompanies);
+        $unAssignedClients = array_slice($clients, 0, $unAssignedClientsNumber);
+
+        $restOfClients = array_slice($clients, $unAssignedClientsNumber);
+        foreach ($restOfClients as $client) {
+            $randomCompany = $companies[array_rand($companies)];
+            $client->setCompany($randomCompany);
+        }
+
+        return array_merge($unAssignedClients, $restOfClients);
+    }
+
+    public function assignTasksToClients(array $tasks, array $clients): array
+    {
+        $numberOfTasks = count($tasks);
+        $numberOfClients = count($clients);
+
+        if ($numberOfTasks === 0 || $numberOfClients === 0) {
+            return [];
+        }
+
+        $unAssignedTasksNumber = rand(0, $numberOfTasks);
+
+        $unAssignedTasks = array_slice($tasks, 0, $unAssignedTasksNumber);
+
+        $restOfTasks = array_slice($tasks, $unAssignedTasksNumber);
+
+        foreach ($restOfTasks as $task) {
+            $randomClient = $clients[array_rand($clients)];
+            $task->setClient($randomClient);
+        }
+
+        return array_merge($unAssignedTasks, $restOfTasks);
+    }
+
+    public function assignTasksToCompanies(array $tasks, array $companies): array
+    {
+        $numberOfTasks = count($tasks);
+        $numberOfCompanies = count($companies);
+
+        if ($numberOfTasks === 0 || $numberOfCompanies === 0) {
+            return [];
+        }
+
+        $unAssignedTasksNumber = rand(0, $numberOfTasks);
+
+        $unAssignedTasks = array_slice($tasks, 0, $unAssignedTasksNumber);
+
+        $restOfTasks = array_slice($tasks, $unAssignedTasksNumber);
+
+        foreach ($restOfTasks as $task) {
+            $randomCompany = $companies[array_rand($companies)];
+            $task->setCompany($randomCompany);
+        }
+
+        return array_merge($unAssignedTasks, $restOfTasks);
+
+    }
+
+    public function saveGeneratedDataToDataBase(array $generatedData): void
+    {
+        $batchSize = 100;
+        foreach ($generatedData as $key => $data) {
+            $this->entityManager->persist($data);
+            if ((($key + 1) % $batchSize) === 0) {
+                $this->entityManager->flush();
+            }
+        }
+        $this->entityManager->flush();
+    }
+
+
+
+
+
 }
