@@ -126,7 +126,7 @@ class FakerService
         $numberOfTasks = count($tasks);
         $numberOfUsers = count($users);
 
-        if ($numberOfUsers === 0 || $numberOfTasks === 0) {
+        if (0 === $numberOfUsers || 0 === $numberOfTasks) {
             return [];
         }
 
@@ -148,7 +148,7 @@ class FakerService
         $numberOfCompanies = count($companies);
         $numberOfClients = count($clients);
 
-        if ($numberOfCompanies === 0 || $numberOfClients === 0) {
+        if (0 === $numberOfCompanies || 0 === $numberOfClients) {
             return [];
         }
 
@@ -169,7 +169,7 @@ class FakerService
         $numberOfTasks = count($tasks);
         $numberOfClients = count($clients);
 
-        if ($numberOfTasks === 0 || $numberOfClients === 0) {
+        if (0 === $numberOfTasks || 0 === $numberOfClients) {
             return [];
         }
 
@@ -192,7 +192,7 @@ class FakerService
         $numberOfTasks = count($tasks);
         $numberOfCompanies = count($companies);
 
-        if ($numberOfTasks === 0 || $numberOfCompanies === 0) {
+        if (0 === $numberOfTasks || 0 === $numberOfCompanies) {
             return [];
         }
 
@@ -208,7 +208,6 @@ class FakerService
         }
 
         return array_merge($unAssignedTasks, $restOfTasks);
-
     }
 
     public function saveGeneratedDataToDataBase(array $generatedData): void
@@ -222,9 +221,4 @@ class FakerService
         }
         $this->entityManager->flush();
     }
-
-
-
-
-
 }

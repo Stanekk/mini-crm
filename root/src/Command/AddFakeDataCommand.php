@@ -44,7 +44,7 @@ class AddFakeDataCommand extends Command
         ]);
         $generatedUsers = $this->faker->generateFakeUsers($numberOfUser);
         $output->writeln([
-            '<info>Generated users:</info> <fg=green;options=bold>' . count($generatedUsers) . '</>',
+            '<info>Generated users:</info> <fg=green;options=bold>'.count($generatedUsers).'</>',
             '',
         ]);
 
@@ -60,7 +60,7 @@ class AddFakeDataCommand extends Command
         ]);
         $generatedCompanies = $this->faker->generateFakeCompanies($numberOfCompanies);
         $output->writeln([
-            '<info>Generated companies:</info> <fg=green;options=bold>' . count($generatedCompanies) . '</>',
+            '<info>Generated companies:</info> <fg=green;options=bold>'.count($generatedCompanies).'</>',
             '',
         ]);
 
@@ -76,7 +76,7 @@ class AddFakeDataCommand extends Command
         ]);
         $generatedTasks = $this->faker->generateFakeTasks($numberOfTasks);
         $output->writeln([
-            '<info>Generated tasks:</info> <fg=green;options=bold>' . count($generatedTasks) . '</>',
+            '<info>Generated tasks:</info> <fg=green;options=bold>'.count($generatedTasks).'</>',
             '',
         ]);
 
@@ -92,12 +92,11 @@ class AddFakeDataCommand extends Command
         ]);
         $generatedClients = $this->faker->generateFakeClients($numberOfClients);
         $output->writeln([
-            '<info>Generated clients:</info> <fg=green;options=bold>' . count($generatedClients) . '</>',
+            '<info>Generated clients:</info> <fg=green;options=bold>'.count($generatedClients).'</>',
             '',
         ]);
 
-
-        //Auto assigning
+        // Auto assigning
         $output->writeln([
             '<info>Auto assign mode assigns randomly</info>',
         ]);
@@ -127,5 +126,4 @@ class AddFakeDataCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }
