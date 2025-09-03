@@ -221,4 +221,29 @@ class FakerService
         }
         $this->entityManager->flush();
     }
+
+    public function clearFakeData(): bool
+    {
+        try {
+            $entities = [
+                Task::class,
+                Client::class,
+                Company::class,
+                User::class,
+            ];
+
+            foreach ($entities as $entityClass) {
+                $this->entityManager->createQueryBuilder()
+                    ->delete($entityClass, 'e')
+                    ->where('e.source = :source')
+                    ->setParameter('source', 'faker')
+                    ->getQuery()
+                    ->execute();
+            }
+        } catch (\Exception $exception) {
+            return false;
+        }
+
+        return true;
+    }
 }

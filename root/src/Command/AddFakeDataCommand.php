@@ -32,6 +32,23 @@ class AddFakeDataCommand extends Command
             '',
         ]);
 
+        $cleanFakeDataQuestion = new ConfirmationQuestion(
+            '<fg=cyan;options=bold>Would you like to delete all data previously created by Faker?? (y/N):</>',
+            false
+        );
+
+        $cleanFakeData = $helper->ask($input, $output, $cleanFakeDataQuestion);
+
+        if ($cleanFakeData) {
+            $fakeDataResult = $this->faker->clearFakeData();
+            if (!$fakeDataResult) {
+                $output->writeln([
+                    '<fg=red;options=bold>Failed to delete data created by faker</>',
+                    '',
+                ]);
+            }
+        }
+
         // --- Users ---
         $numberOfUsersQuestion = new Question(
             '<fg=cyan;options=bold>Number of users to generate [Default: 10, Max: 15]:</>',
