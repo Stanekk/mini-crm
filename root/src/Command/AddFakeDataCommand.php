@@ -8,7 +8,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 #[AsCommand(name: 'app:add-fake-data', description: 'Add example data by faker php', help: 'This command adds sample data generated with faker php')]
@@ -22,6 +21,11 @@ class AddFakeDataCommand extends Command
         parent::__construct();
     }
 
+    private function askUser(string $question, mixed $default): Question
+    {
+        return new Question('<fg=cyan;options=bold>'.$question.'</>', $default);
+    }
+
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = new QuestionHelper();
@@ -32,11 +36,7 @@ class AddFakeDataCommand extends Command
             '',
         ]);
 
-        $cleanFakeDataQuestion = new ConfirmationQuestion(
-            '<fg=cyan;options=bold>Would you like to delete all data previously created by Faker?? (y/N):</>',
-            false
-        );
-
+        $cleanFakeDataQuestion = $this->askUser('Would you like to delete all data previously created by Faker?? (y/N):', false);
         $cleanFakeData = $helper->ask($input, $output, $cleanFakeDataQuestion);
 
         if ($cleanFakeData) {
@@ -50,10 +50,7 @@ class AddFakeDataCommand extends Command
         }
 
         // --- Users ---
-        $numberOfUsersQuestion = new Question(
-            '<fg=cyan;options=bold>Number of users to generate [Default: 10, Max: 15]:</>',
-            10
-        );
+        $numberOfUsersQuestion = $this->askUser('Number of users to generate [Default: 10, Max: 15]:', 10);
         $numberOfUser = $helper->ask($input, $output, $numberOfUsersQuestion);
 
         $output->writeln([
@@ -66,10 +63,7 @@ class AddFakeDataCommand extends Command
         ]);
 
         // --- Companies ---
-        $numberOfCompaniesQuestion = new Question(
-            '<fg=cyan;options=bold>Number of companies to generate [Default: 10, Max: 20]:</>',
-            10
-        );
+        $numberOfCompaniesQuestion = $this->askUser('Number of companies to generate [Default: 10, Max: 20]:', 10);
         $numberOfCompanies = $helper->ask($input, $output, $numberOfCompaniesQuestion);
 
         $output->writeln([
@@ -82,10 +76,7 @@ class AddFakeDataCommand extends Command
         ]);
 
         // --- Tasks ---
-        $numberOfTasksQuestion = new Question(
-            '<fg=cyan;options=bold>Number of tasks to generate [Default: 10, Max: 50]:</>',
-            10
-        );
+        $numberOfTasksQuestion = $this->askUser('Number of tasks to generate [Default: 10, Max: 50]:', 10);
         $numberOfTasks = $helper->ask($input, $output, $numberOfTasksQuestion);
 
         $output->writeln([
@@ -98,10 +89,7 @@ class AddFakeDataCommand extends Command
         ]);
 
         // --- Clients ---
-        $numberOfClientsQuestion = new Question(
-            '<fg=cyan;options=bold>Number of clients to generate [Default: 10, Max: 20]:</>',
-            10
-        );
+        $numberOfClientsQuestion = $this->askUser('Number of clients to generate [Default: 10, Max: 20]:', 10);
         $numberOfClients = $helper->ask($input, $output, $numberOfClientsQuestion);
 
         $output->writeln([
@@ -117,11 +105,8 @@ class AddFakeDataCommand extends Command
         $output->writeln([
             '<info>Auto assign mode assigns randomly</info>',
         ]);
-        $autoAssigningModeQuestion = new ConfirmationQuestion(
-            '<fg=cyan;options=bold>Do you want to enable auto-assignment of records (Task-user, client-company, etc.)? (y/N):</>',
-            false
-        );
 
+        $autoAssigningModeQuestion = $this->askUser('Do you want to enable auto-assignment of records (Task-user, client-company, etc.)? (y/N):', false);
         $autoAssigningMode = $helper->ask($input, $output, $autoAssigningModeQuestion);
 
         $this->faker->saveGeneratedDataToDataBase($generatedUsers);
