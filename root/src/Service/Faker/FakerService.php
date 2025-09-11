@@ -224,6 +224,8 @@ class FakerService
 
     public function clearFakeData(): bool
     {
+        $this->entityManager->beginTransaction();
+
         try {
             $entities = [
                 Task::class,
@@ -240,10 +242,14 @@ class FakerService
                     ->getQuery()
                     ->execute();
             }
+
+            $this->entityManager->commit();
+
+            return true;
         } catch (\Exception $exception) {
+            $this->entityManager->rollback();
+
             return false;
         }
-
-        return true;
     }
 }
