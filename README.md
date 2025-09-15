@@ -376,3 +376,183 @@ This request does not require administrator privileges.
 Nothing returns (HTTP 204)
 
 
+### Companies 
+
+```http request
+  GET /api/companies
+```
+Returns a list of companies in the app
+
+Example response (HTTP 200)
+```
+{
+    "data": [
+        {
+            "id": 66,
+            "name": "Stowarzyszenie Krupa",
+            "vatNumber": "PL9438355726",
+            "nipNumber": "9438355726",
+            "email": "franciszek92@example.com",
+            "createdAt": {
+                "date": "2025-09-11 17:40:11.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "updatedAt": {
+                "date": "2025-09-11 17:40:11.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "notes": null,
+            "isActive": true,
+            "dataSource": "faker"
+        },
+        {...}
+    ],
+    "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 21,
+        "pages": 2
+    }
+}
+```
+Creating a new company
+
+```http request
+  POST /api/companies
+```
+
+
+| Parameter   | Type      | Description                                     |
+|:------------|:----------|:------------------------------------------------|
+| `name`      | `string`  | **Required**                                    |
+| `email`     | `string`  | **Required**                                    |
+| `vatNumber` | `string`  |                                                 |
+| `nipNumber` | `string`  |                                                 |
+| `notes`     | `string`  |                                                 |
+| `isActive`  | `boolean` | Always active by default                        |
+
+Example request
+
+```http request
+{
+    "name": "Firma 1",
+    "email": "firma@firma.pl",
+    "vatNumber": "PL9438355726",
+    "nipNumber": "9438355726",
+    "notes": "Notes",
+    "isActive": false
+}
+```
+
+Example response (HTTP 201)
+
+```http request
+{
+    "id": 71,
+    "name": "Firma 1",
+    "vatNumber": "PL9438355726",
+    "nipNumber": "9438355726",
+    "email": "firma@firma.pl",
+    "createdAt": {
+        "date": "2025-09-15 17:43:24.065030",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": {
+        "date": "2025-09-15 17:43:24.065030",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "notes": "Notes",
+    "isActive": false,
+    "dataSource": "app"
+}
+```
+
+Update company
+
+```http request
+PATCH /api/companies/{id}
+```
+
+| Parameter   | Type      | Description                               |
+|:------------|:----------|:------------------------------------------|
+| `name`      | `string`  | It cannot be empty if it is to be updated |
+| `vatNumber` | `string`  |                                           |
+| `nipNumber` | `string`  |                                           |
+| `notes`     | `string`  |                                           |
+| `isActive`  | `boolean` |                                           |
+
+Example request:
+```http request
+{
+    "name": "New company name",
+    "vatNumber": "PL8668355726",
+    "isActive": true
+}
+```
+
+Example response (HTTP 200)
+```http request
+{
+    "id": 71,
+    "name": "New company name",
+    "vatNumber": "PL8668355726",
+    "nipNumber": "9438355726",
+    "email": "firma@firma.pl",
+    "createdAt": {
+        "date": "2025-09-15 17:43:24.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": {
+        "date": "2025-09-15 17:50:44.815574",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "notes": "Notes",
+    "isActive": true,
+    "dataSource": "app"
+}
+```
+
+Company detail
+
+```http request
+GET /api/companies/{id}
+```
+Example response (HTTP 200)
+```http request
+{
+    "id": 71,
+    "name": "New company name",
+    "vatNumber": "PL8668355726",
+    "nipNumber": "9438355726",
+    "email": "firma@firma.pl",
+    "createdAt": {
+        "date": "2025-09-15 17:43:24.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": {
+        "date": "2025-09-15 17:50:44.815574",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "notes": "Notes",
+    "isActive": true,
+    "dataSource": "app"
+}
+```
+
+Deleting a company
+
+```http request
+DELETE /api/companies/{id}
+```
+
+This request does not require administrator privileges.
+
+Nothing returns (HTTP 204)
