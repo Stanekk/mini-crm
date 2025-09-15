@@ -82,7 +82,7 @@ Example request:
 }
 ```
 
-Example sucess response (HTTP 201)
+Example success response (HTTP 201)
 ```
 {
     "id": 84,
@@ -106,7 +106,7 @@ Example sucess response (HTTP 201)
 | `password`      | `string` | **Required**. |
 
 
-Example sucess response (HTTP 200)
+Example success response (HTTP 200)
 
 ```
 {
@@ -164,8 +164,215 @@ Example response:
 }
 ```
 
+Removes a user (sets tasks as unassigned if the user had any)
 
+Returns only response code 204
 ```http
   DELETE /users/delete/{id}
 ```
+
+#### CLIENTS
+
+```http
+  GET /api/clients
+```
+
+Returns a list of clients in the application (HTTP 200)
+
+Example response:
+
+```
+{
+    "data": [
+             {
+            "id": 49,
+            "firstName": "Nataniel",
+            "lastName": "Nowicki",
+            "dataSource": "faker",
+            "company": {
+                "id": 64,
+                "name": "Kwiatkowski",
+                "email": "jasinski.damian@example.com",
+                "source": "faker"
+            },
+            "email": "daria.kowalczyk@example.com",
+            "phone": "0048 271 076 395"
+        },
+        {
+            "id": 51,
+            "firstName": "Bianka",
+            "lastName": "Głowacka",
+            "dataSource": "faker",
+            "company": {
+                "id": 67,
+                "name": "Michalski sp. z o.o.",
+                "email": "ada.szewczyk@example.com",
+                "source": "faker"
+            },
+            "email": "karolina11@example.net",
+            "phone": "0048 567 174 109"
+        },
+        {...}
+    ],
+    "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 21,
+        "pages": 2
+    }
+}
+```
+
+```http
+  POST /api/clients
+```
+
+Creates a new client
+
+
+| Parameter   | Type      | Description           |
+|:------------|:----------|:----------------------|
+| `firstName` | `string`  | **Required**          |
+| `lastName`  | `string`  | **Required**          |
+| `email`     | `string`  | **Required**          |
+| `phone`     | `string`  |                       |
+| `company`   | `integer` | existing company ID |
+
+Example request:
+
+```http request
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "example@example.com",
+    "phone": "+48 555444111",
+    "company": 68
+}
+```
+
+Example response (HTTP 201)
+
+Company object is a special short type in this response
+
+```http request
+{
+    "id": 55,
+    "firstName": "John",
+    "lastName": "Doe",
+    "dataSource": "app",
+    "company": {
+        "id": 68,
+        "name": "Przybylska sp. p.",
+        "email": "olgierd93@example.net",
+        "source": "faker"
+    },
+    "email": "example@example.com",
+    "phone": "+48 555444111"
+}
+```
+
+Client details
+```http
+  GET /api/clients
+```
+
+Example response (HTTP 200)
+
+Company object is a special short type in this response
+
+```http request
+{
+    "id": 55,
+    "firstName": "John",
+    "lastName": "Doe",
+    "dataSource": "app",
+    "company": {
+        "id": 68,
+        "name": "Przybylska sp. p.",
+        "email": "olgierd93@example.net",
+        "source": "faker"
+    },
+    "email": "example@example.com",
+    "phone": "+48 555444111"
+}
+```
+
+Client update
+```http request
+  PATCH /api/clients/{id}
+```
+
+Updates those properties that will be sent in the request
+
+
+| Parameter   | Type      | Description           |
+|:------------|:----------|:----------------------|
+| `firstName` | `string`  | It cannot be empty if it is to be updated       |
+| `lastName`  | `string`  | It cannot be empty if it is to be updated        |
+| `phone`     | `string`  |                       |
+| `company`   | `integer` |  |
+
+Example request
+
+```http request
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "emaail@email.com",
+    "company": 68
+}
+```
+
+Example response (HTTP 200)
+```http request
+{
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "dataSource": "app",
+    "company": {
+        "id": 68,
+        "name": "Przybylska sp. p.",
+        "email": "olgierd93@example.net",
+        "source": "faker"
+    },
+    "email": "emaail@email.com",
+    "phone": "234234324"
+}
+```
+If the company ID is provided as null, the client will not belong to the company
+
+For example:
+
+```http request
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "emaail@email.com",
+    "company": null
+}
+```
+
+Will return the result:
+
+```http request
+{
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "dataSource": "app",
+    "company": null,
+    "email": "emaail@email.com",
+    "phone": "234234324"
+}
+```
+
+Deleting clients
+```http request
+  DELETE /api/clients/{id}
+```
+This request does not require administrator privileges.
+
+Nothing returns (HTTP 204)
+
 
