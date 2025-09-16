@@ -1,7 +1,7 @@
 
 # Mini CRM API
 
-*Basic REST API written in symfony for mini crm or other purposes*
+*Lightweight REST API built with Symfony, designed as a foundation for a mini CRM system. Demonstrates authentication, authorization, event-driven architecture, email handling, and developer tooling.*
 
 
 ## Tech Stack
@@ -30,8 +30,8 @@ docker-compose ps
 
 - mysql8.0.39 - database
 - php8.4 - PHP-FPM
-- nginx - www server
-- phpmyadmin - database panel
+- nginx - web server
+- phpmyadmin - database management panel
 - mailhog - SMTP test server
 
 Go to the PHP container
@@ -74,7 +74,7 @@ Authorization: Bearer <TOKEN>
 | `passwordConfirm` | `string` | **Required**|
 
 Example request:
-```
+```json
 {
     "email": "testemail@example.pl",
     "password": "12345678",
@@ -83,7 +83,7 @@ Example request:
 ```
 
 Example success response (HTTP 201)
-```
+```json
 {
     "id": 84,
     "email": "testemail@example.pl",
@@ -108,9 +108,9 @@ Example success response (HTTP 201)
 
 Example success response (HTTP 200)
 
-```
+```json
 {
-    "token": <TOKEN>
+    "token": "<TOKEN>"
 }
 ```
 
@@ -124,7 +124,7 @@ Returns a list of users in the application (HTTP 200)
 
 Example response:
 
-```
+```json
 {
     "data": [
         {
@@ -135,7 +135,7 @@ Example response:
             ],
             "source": "app"
         },
-        {...}
+        {"..."}
     ],
     "pagination": {
         "page": 1,
@@ -152,7 +152,7 @@ Example response:
 Returns the currently logged-in user (HTTP 200)
 
 Example response:
-```aiignore
+```json
 {
     "id": 9,
     "email": "admin@admin.pl",
@@ -181,7 +181,7 @@ Returns a list of clients in the application (HTTP 200)
 
 Example response:
 
-```
+```json
 {
     "data": [
              {
@@ -240,7 +240,7 @@ Creates a new client
 
 Example request:
 
-```http request
+```json
 {
     "firstName": "John",
     "lastName": "Doe",
@@ -254,7 +254,7 @@ Example response (HTTP 201)
 
 Company object is a special short type in this response
 
-```http request
+```json
 {
     "id": 55,
     "firstName": "John",
@@ -280,7 +280,7 @@ Example response (HTTP 200)
 
 Company object is a special short type in this response
 
-```http request
+```json
 {
     "id": 55,
     "firstName": "John",
@@ -314,7 +314,7 @@ Updates those properties that will be sent in the request
 
 Example request
 
-```http request
+```json
 {
     "firstName": "John",
     "lastName": "Doe",
@@ -324,7 +324,7 @@ Example request
 ```
 
 Example response (HTTP 200)
-```http request
+```json
 {
     "id": 1,
     "firstName": "John",
@@ -344,7 +344,7 @@ If the company ID is provided as null, the client will not belong to the company
 
 For example:
 
-```http request
+```json
 {
     "firstName": "John",
     "lastName": "Doe",
@@ -355,7 +355,7 @@ For example:
 
 Will return the result:
 
-```http request
+```json
 {
     "id": 1,
     "firstName": "John",
@@ -384,7 +384,7 @@ Nothing returns (HTTP 204)
 Returns a list of companies in the app
 
 Example response (HTTP 200)
-```
+```json
 {
     "data": [
         {
@@ -435,7 +435,7 @@ Creating a new company
 
 Example request
 
-```http request
+```json
 {
     "name": "Firma 1",
     "email": "firma@firma.pl",
@@ -448,7 +448,7 @@ Example request
 
 Example response (HTTP 201)
 
-```http request
+```json
 {
     "id": 71,
     "name": "Firma 1",
@@ -486,7 +486,7 @@ PATCH /api/companies/{id}
 | `isActive`  | `boolean` |                                           |
 
 Example request:
-```http request
+```json
 {
     "name": "New company name",
     "vatNumber": "PL8668355726",
@@ -495,7 +495,7 @@ Example request:
 ```
 
 Example response (HTTP 200)
-```http request
+```json
 {
     "id": 71,
     "name": "New company name",
@@ -524,7 +524,7 @@ Company detail
 GET /api/companies/{id}
 ```
 Example response (HTTP 200)
-```http request
+```json
 {
     "id": 71,
     "name": "New company name",
@@ -556,3 +556,293 @@ DELETE /api/companies/{id}
 This request does not require administrator privileges.
 
 Nothing returns (HTTP 204)
+
+### Tasks
+
+```http request
+  GET /api/tasks
+```
+Returns a list of tasks in the app
+
+Example response (HTTP 200)
+
+```json
+ {
+            "id": 50,
+            "name": "Modi suscipit et repudiandae rem reiciendis.",
+            "description": "Sunt ea est amet non delectus. Sunt laborum quia et possimus sapiente et. Explicabo dolor nemo ad sint eum eos eveniet. Autem ad dolores ut et fuga eaque.",
+            "dueDate": {
+                "date": "2025-08-29 18:28:47.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "createdAt": {
+                "date": "2025-09-11 17:40:13.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "updatedAt": null,
+            "assignedTo": {
+                "id": 77,
+                "email": "kalinowski.olgierd@example.org",
+                "roles": [
+                    "ROLE_USER"
+                ],
+                "source": "faker"
+            },
+            "client": {
+                "id": 53,
+                "firstName": "Ewa",
+                "lastName": "Wysocka",
+                "dataSource": "faker",
+                "company": {
+                    "id": 65,
+                    "name": "Borkowski i syn",
+                    "email": "justyna.laskowska@example.net",
+                    "source": "faker"
+                },
+                "email": "blaszczyk.jagoda@example.net",
+                "phone": "+48 71 726 18 24"
+            },
+            "company": null,
+            "status": "completed",
+            "source": "faker"
+        },
+        {...}
+    ],
+    "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 13,
+        "pages": 1
+    }
+}
+```
+
+Task creation
+
+```http request
+POST api/tasks
+```
+**By default, every new task has the status pending.**
+
+| Parameter     | Type      | Description                                  |
+|:--------------|:----------|:---------------------------------------------|
+| `name`        | `string`  | **Required**                                 |
+| `description` | `string`  |                                              |
+| `dueDate`     | `string`  | **Required**   In format YYYY-MM-DD HH:MM:SS |
+| `assignedTo`  | `integer` | existing user ID                             |
+| `client`      | `integer` | existing client ID                           |
+| `company`     | `integer` | existing company ID                          |
+| `company`     | `integer` | existing company ID                          |
+
+Example request
+
+```json
+{
+    "name": "Test task",
+    "dueDate": "2025-05-11 12:11:33",
+}
+```
+
+Example response (HTTP 201)
+```json
+{
+    "id": 52,
+    "name": "Test task",
+    "description": null,
+    "dueDate": {
+        "date": "2025-05-11 12:11:33.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "createdAt": {
+        "date": "2025-09-16 18:05:00.089561",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": null,
+    "assignedTo": null,
+    "client": null,
+    "company": null,
+    "status": "pending",
+    "source": "app"
+}
+```
+
+Task details
+
+```http request
+GET api/tasks/{id}
+```
+Example response (HTTP 200)
+
+```json
+{
+    "id": 52,
+    "name": "Test task",
+    "description": null,
+    "dueDate": {
+        "date": "2025-05-11 12:11:33.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "createdAt": {
+        "date": "2025-09-16 18:05:00.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": null,
+    "assignedTo": null,
+    "client": null,
+    "company": null,
+    "status": "pending",
+    "source": "app"
+}
+```
+
+Update task
+
+```http request
+PATCH api/tasks/{id}
+```
+
+
+| Parameter    | Type      | Description                                                                            |
+|:-------------|:----------|:---------------------------------------------------------------------------------------|
+| `name`       | `string`  | It cannot be empty if it is sent to a request.                                         |
+| `dueDate`    | `string`  | It cannot be empty if it is sent to a request.                                         |
+| `status`     | `string`  | 'pending', 'in_progress', 'waiting_for_client', 'completed', 'cancelled', 'closed'     |
+| `client`     | `integer` | if a null value or a non-existent resource is specified, a null value will be assigned |
+| `company`    | `integer` | if a null value or a non-existent resource is specified, a null value will be assigned |
+| `assignedTo` | `integer` | if a null value or a non-existent resource is specified, a null value will be assigned |
+
+Example request
+
+```json
+{
+    "name": "New name",
+    "dueDate": "025-09-15 12:00:00",
+    "assignedTo": 82,
+    "client": 51,
+    "company": 64,
+    "status": "completed"
+}
+```
+
+Example response (HTTP 200)
+
+```json
+{
+    "id": 52,
+    "name": "New name",
+    "description": null,
+    "dueDate": {
+        "date": "2025-09-15 12:00:00.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "createdAt": {
+        "date": "2025-09-16 18:05:00.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "updatedAt": {
+        "date": "2025-09-16 18:23:52.053133",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "assignedTo": {
+        "id": 82,
+        "email": "dominika08@example.net",
+        "roles": [
+            "ROLE_USER"
+        ],
+        "source": "faker"
+    },
+    "client": {
+        "id": 51,
+        "firstName": "Bianka",
+        "lastName": "Głowacka",
+        "dataSource": "faker",
+        "company": {
+            "id": 67,
+            "name": "Michalski sp. z o.o.",
+            "email": "ada.szewczyk@example.com",
+            "source": "faker"
+        },
+        "email": "karolina11@example.net",
+        "phone": "0048 567 174 109"
+    },
+    "company": {
+        "id": 64,
+        "name": "Kwiatkowski",
+        "email": "jasinski.damian@example.com",
+        "source": "faker"
+    },
+    "status": "completed",
+    "source": "app"
+}
+```
+
+Deleting task
+
+```http request
+DELETE api/tasks/{id}
+```
+Returns only response code 204
+
+
+## Unit tests
+Run inside the php8.4 container:
+
+```
+composer test
+```
+
+## Code style (CS Fixer)
+
+Run inside the php8.4 container:
+
+```
+composer cs
+```
+
+## Symfony events
+
+### Client created event
+*Dispatched after successfully creating a client with:*
+```http request
+POST api/clients
+```
+This event sends an email, which can be viewed in Mailhog: http://localhost:8025
+
+### User registered event
+*Dispatched after successful user registration with:*
+```http request
+POST api/register
+```
+This event also sends an email, available in Mailhog.
+
+## Symfony commands
+
+### Create admin
+In the php8.4 container
+
+```http request
+php bin/console app:create-admin-user
+```
+*This command starts an interactive wizard that guides you through creating a user with administrator privileges.*
+
+### Start generating test data (Faker PHP)
+In the php8.4 container
+
+```http request
+php bin/console app:add-fake-data
+```
+*This command launches a wizard that guides you through generating fake data for testing.*
+
+**All resources created this way will include the property:**
+```http request
+source: "faker"
+```
